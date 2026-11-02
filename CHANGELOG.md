@@ -3,6 +3,22 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.3] — 2026-11-03
+
+### Changed — hiring, redesigned
+- **No experience gate on hiring.** Any job can be applied for at any XP;
+  the job board no longer disables buttons or lists an XP requirement.
+- **Experience is never wiped.** XP and levels are now kept **per job**:
+  switching jobs keeps each job's level and progress, and returning to a job
+  resumes where you left it (previously changing jobs reset you to Lv.1).
+- **Getting hired pays.** A first hire into a job pays a signing bonus of one
+  shift's pay, counted as income (once per job, so it can't be farmed by
+  switching back and forth).
+
+### Fixed
+- The "shift done" message showed a duplicated currency symbol ($¥…); the
+  stray "$" is removed, matching the work button fix in 1.1.2.
+
 ## [1.1.2] — 2026-11-03
 
 Consistency audit across facility names, editor types, activity types,
@@ -129,6 +145,7 @@ try to end each real calendar month in the black.
   pre-release versions migrate automatically.
 - In-game money is fictional and cannot be cashed out.
 
+[1.1.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.3
 [1.1.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.2
 [1.1.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.1
 [1.1.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.0

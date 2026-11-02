@@ -127,9 +127,10 @@ function renderPanel(){
   if(S.loc==="jobs"){
     h="<h3>"+t("pJobs")+"</h3><div class='list'>";
     allJobs().forEach(function(j,i){
-      var cur=S.job===j.title.zh, ok=S.xp>=j.xp && !cur;
-      h+="<div class='item'><span><b>"+L(j.title)+"</b> · "+money(j.pay)+"<small>"+L(j.desc)+"（"+fmt("xpNeed", j.xp)+"）</small></span>"
-        + (cur ? "<b>"+t("onJob")+"</b>" : "<button class='mini' onclick='applyJob("+i+")' "+(ok?"":"disabled")+">"+t("apply")+"</button>") + "</div>";
+      var cur=S.job===j.title.zh;
+      var lv=(S.jobLevels && S.jobLevels[j.title.zh]) || 0;
+      h+="<div class='item'><span><b>"+L(j.title)+"</b> · "+money(j.pay)+"<small>"+L(j.desc)+(lv ? " · Lv."+lv : "")+"</small></span>"
+        + (cur ? "<b>"+t("onJob")+"</b>" : "<button class='mini' onclick='applyJob("+i+")'>"+t("apply")+"</button>") + "</div>";
     });
     h+="</div><p style='font-size:13px;opacity:.7'>"+t("jobsHint")+"</p>";
   }

@@ -9,13 +9,29 @@ function doMove(i){
   S.cash-=rent; exp("rent",rent); S.home=i; S.mood=clamp(S.mood+8);
   sayT("sMoved", L(allHomes()[i].name)); logT("lMove", L(allHomes()[i].name)); render();
 }
-function applyJob(i){ var j=allJobs()[i]; S.job=j.title.zh; S.jobLevel=1; sayT("sHired", L(j.title)); logT("lHired", L(j.title)); render(); }
+function applyJob(i){
+  var j=allJobs()[i]; if(!j) return;
+  var key=j.title.zh;
+  if(S.job===key){ render(); return; }
+  S.job=key;
+  if(!S.jobLevels) S.jobLevels={};
+  if(!S.jobXp) S.jobXp={};
+  if(!S.hiredBonus) S.hiredBonus=[];
+  S.jobLevel=S.jobLevels[key]||1;
+  if(S.jobXp[key]===undefined) S.jobXp[key]=0;
+  if(S.hiredBonus.indexOf(key)<0){
+    S.hiredBonus.push(key);
+    var bonus=jobPay(); S.cash+=bonus; inc(bonus);
+    sayT("sHiredBonus", L(j.title), money(bonus));
+  } else sayT("sHired", L(j.title));
+  logT("lHired", L(j.title)); render();
+}
 function doWork(){
   if(S.energy<22){ sayT("sTired"); render(); return; }
-  var pay=jobPay(); S.cash+=pay; inc(pay); S.xp+=10; S.energy=clamp(S.energy-22); S.hunger=clamp(S.hunger-6);
+  var pay=jobPay(); S.cash+=pay; inc(pay); S.xp+=10; if(!S.jobXp) S.jobXp={}; S.jobXp[S.job]=(S.jobXp[S.job]||0)+10; S.energy=clamp(S.energy-22); S.hunger=clamp(S.hunger-6);
   advance(4); logT("lWork", money(pay));
   var jt=jobTitleObj();
-  if(jt && S.xp>=S.jobLevel*40 && S.jobLevel<5){ S.jobLevel+=1; sayT("sPromoted", L(jt.title), S.jobLevel, money(jobPay())); logT("lPromote", L(jt.title), S.jobLevel); }
+  if(jt && (S.jobXp[S.job]||0)>=S.jobLevel*40 && S.jobLevel<5){ S.jobLevel+=1; if(!S.jobLevels) S.jobLevels={}; S.jobLevels[S.job]=S.jobLevel; sayT("sPromoted", L(jt.title), S.jobLevel, money(jobPay())); logT("lPromote", L(jt.title), S.jobLevel); }
   else sayT("sWork", money(pay));
   render();
 }
