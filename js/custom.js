@@ -23,7 +23,7 @@ function submitCustom(){
   else if(ty==="npc"){ S.customNpcs.push({name:nm, desc:d||t("myFriend")}); msgKey="cuOkNpc"; }
   else if(ty==="home"){ S.custom.homes.push({rent:cuNum("cNum1",150), name:L3(nm,nm,nm)}); msgKey="cuOkShop"; }
   else if(ty==="job"){ S.custom.jobs.push({pay:cuNum("cNum1",100), xp:0, title:L3(nm,nm,nm), desc:L3(d||nm,d||nm,d||nm)}); msgKey="cuOkShop"; }
-  else if(ty==="food"){ S.custom.foods.push({price:cuNum("cNum1",20), hunger:cuNum("cNum2",20), mood:6, name:L3(nm,nm,nm), desc:L3(d||nm,d||nm,d||nm)}); msgKey="cuOkShop"; }
+  else if(ty==="food"){ var hv=parseFloat($("cNum2").value); if(isNaN(hv)||hv<0) hv=20; hv=Math.min(100, Math.round(hv)); S.custom.foods.push({price:cuNum("cNum1",20), hunger:hv, mood:6, name:L3(nm,nm,nm), desc:L3(d||nm,d||nm,d||nm)}); msgKey="cuOkShop"; }
   else if(ty==="goods"){ S.custom.goods.push({price:cuNum("cNum1",30), once:true, name:L3(nm,nm,nm), tag:L3(d||nm,d||nm,d||nm)}); msgKey="cuOkShop"; }
   else if(ty==="place"){ S.custom.places.push({name:nm, desc:d||nm, cost:cuNum("cNum1",10), fx:$("cFx").value, emoji:$("cEmoji").value}); msgKey="cuOkShop"; }
   else if(ty==="transport"){ S.custom.transports.push({name:nm, fare:cuNum("cNum1",3)}); msgKey="cuOkShop"; }

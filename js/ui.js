@@ -63,7 +63,7 @@ function render(){
   $("barSocial").style.width=S.social+"%"; $("vSocial").textContent=S.social;
   $("vXp").textContent=S.xp;
   var jt=jobTitleObj();
-  $("jobInfo").textContent = jt ? fmt("jobInfo", L(jt.title), S.jobLevel, money(jobPay())) : t("noJob");
+  $("jobInfo").textContent = jt ? fmt("jobInfo", L(jt.title), money(jobPay())) : t("noJob");
   $("homeInfo").textContent=fmt("homeInfo", L(allHomes()[S.home].name), money(allHomes()[S.home].rent));
   if(document.activeElement!==$("nameInput")) $("nameInput").value=S.name;
   var Lc=loc();

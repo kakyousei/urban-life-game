@@ -22,6 +22,12 @@ function closeMonth(ym){
 function resyncClock(){
   var today=todayISO();
   if(S.dateISO && S.dateISO<today){
+    var away=Math.round((isoToDate(today)-isoToDate(S.dateISO))/86400000);
+    if(away>0){
+      if(S.ads) S.ads=S.ads.filter(function(a){ a.days-=away; return a.days>0; });
+      if(S.songs) S.songs=S.songs.filter(function(x){ x.days-=away; return x.days>0; });
+      S.day=(S.day||1)+away; S.daysPlayed=(S.daysPlayed||0)+away;
+    }
     var om=S.dateISO.slice(0,7);
     if(om!==today.slice(0,7)){
       if(S.mInc>0 || ALLCATS.some(function(c){ return (S.mExp[c]||0)>0; })) closeMonth(om);

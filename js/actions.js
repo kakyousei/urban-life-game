@@ -34,7 +34,7 @@ function doWork(){
   render();
 }
 function doOfficeChat(){ S.social=clamp(S.social+8); S.energy=clamp(S.energy-4); advance(1); sayT("sOfficeChat"); render(); }
-function doDance(){ if(!spendCash(20,"fun")){ render(); return; } S.mood=clamp(S.mood+18); S.social=clamp(S.social+12); S.energy=clamp(S.energy-15); advance(2); sayT("sDance"); logT("lDance"); render(); }
+function doDance(){ if(!spendCash(20,"fun")){ render(); return; } S.mood=clamp(S.mood+18+(hasItem("时尚外套")?4:0)); S.social=clamp(S.social+12); S.energy=clamp(S.energy-15); advance(2); sayT("sDance"); logT("lDance"); render(); }
 function doClubChat(){
   if(!spendCash(12,"fun")){ render(); return; }
   S.social=clamp(S.social+10); S.mood=clamp(S.mood+6); advance(1);
@@ -77,7 +77,7 @@ function doMarket(){ if(!spendCash(10,"shop")){ render(); return; } S.mood=clamp
 function visitCustom(i){ var c=S.customShops[i]; S.mood=clamp(S.mood+6); S.social=clamp(S.social+3); advance(1); sayT("sCustom", c.name, c.desc); render(); }
 function doChat(id){
   var n=npcById(id);
-  var gain=5 + (hasItem("智能手机")?2:0);
+  var gain=5 + (hasItem("智能手机")?2:0) + (hasItem("香水")?1:0);
   var line = typeof n.line==="string" ? n.line : L(n.line);
   if(S.hygiene<25){ gain=Math.max(1, Math.floor(gain/2)); S.friends[id]=clamp((S.friends[id]||0)+gain); S.social=clamp(S.social+3); advance(1); sayT("sChatDirty", n.name, "", gain); }
   else { S.friends[id]=clamp((S.friends[id]||0)+gain); S.social=clamp(S.social+6); advance(1); sayT("sChat", n.name, line, gain); }

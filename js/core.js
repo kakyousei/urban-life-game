@@ -63,8 +63,8 @@ function chargeRent(){
   var h=allHomes()[S.home]; if(!h) return;
   var rent=h.rent;
   if(S.cash>=rent){ S.cash-=rent; exp("rent",rent); logT("lRent", money(rent)); sayT("sRentPaid", money(rent)); }
-  else { var short=rent-S.cash; S.cash=0; S.debt+=short; logT("lRentDebt", money(short)); sayT("sRentDebt", money(rent)); }
-  if(S.debt>0){ S.debt=Math.round(S.debt*1.05); }
+  else { var paid=S.cash; var short=rent-paid; S.cash=0; S.debt+=short; if(paid>0) exp("rent",paid); logT("lRentDebt", money(short)); sayT("sRentDebt", money(rent)); }
+  if(S.debt>0){ var nd=Math.round(S.debt*1.05); if(nd>S.debt) exp("other", nd-S.debt); S.debt=nd; }
 }
 function newDay(){
   var prevISO=S.dateISO;

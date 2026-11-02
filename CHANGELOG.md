@@ -3,6 +3,25 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.3.4] — 2026-11-03
+
+### Fixed — full audit against real daily life
+- Rent shortfall: when cash covered only part of the rent, the part
+  actually paid was never recorded as an expense. It now is; the unpaid
+  remainder still becomes debt.
+- Debt interest (5%/month) grew the debt silently and appeared in no
+  report. It is now booked as an "other" expense each month.
+- Custom food "fullness" was run through the currency converter (a
+  fullness of 60 became ~8 in Chinese, ~0 in Japanese). It is a stat,
+  not money, and is now stored as entered.
+- Merchant ads and singer placements now age while you are away, in
+  step with the real calendar, instead of freezing until you play.
+- The job line showed a level ("Lv.1") that could never change since
+  promotions were removed; it now shows just title and per-shift pay.
+- Perfume and the fashion jacket promised effects their tags described
+  but did nothing: perfume now adds +1 to café chat gains, and the
+  jacket adds +4 mood when dancing at the club.
+
 ## [1.3.3] — 2026-11-03
 
 ### Fixed — entered amounts changed by a yen or two (6000 → 6001)
@@ -242,6 +261,7 @@ try to end each real calendar month in the black.
 - In-game money is fictional and cannot be cashed out.
 
 [1.1.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.3
+[1.3.4]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.4
 [1.3.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.3
 [1.3.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.2
 [1.3.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.1
