@@ -3,6 +3,35 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.2] — 2026-11-03
+
+Consistency audit across facility names, editor types, activity types,
+merchant categories and budget categories — and every money movement.
+
+### Fixed
+- **Custom facilities now actually work when used.** Eating a custom dish,
+  applying for a custom job, buying a custom product and moving into a custom
+  home read the built-in lists instead of the combined ones, so custom entries
+  acted on the wrong item or failed. All four actions now use the combined
+  lists the panels render.
+- **Merchant and singer payments are counted.** They were paid in cash but
+  recorded in no budget category, so the monthly report understated spending.
+  A tracked **Other** category （其他 / その他） now covers them and appears in
+  the monthly summary and report.
+- **Merchant categories re-localise.** The business category was stored as
+  text in whatever language it was picked in and stayed that way; it is now
+  stored as an index and rendered in the current language (old ads with a
+  stored string still display as-is).
+- Work pay wording is per shift everywhere (was "per day" in places), and a
+  stray "$" that duplicated the currency symbol in the work button is gone.
+
+### Verified already consistent
+- Budget category names are one key set shared by the budget panel, the
+  budget dialog, the monthly summary and the monthly report in all languages.
+- Editor types name their facility; activity types, their labels and their
+  effects correspond; all other income and spending (work, gigs, tips, rent,
+  fares, food, fun, stays, shopping, custom places) is categorised.
+
 ## [1.1.1] — 2026-11-03
 
 ### Added
@@ -100,6 +129,7 @@ try to end each real calendar month in the black.
   pre-release versions migrate automatically.
 - In-game money is fictional and cannot be cashed out.
 
+[1.1.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.2
 [1.1.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.1
 [1.1.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.0
 [1.0.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.0.1

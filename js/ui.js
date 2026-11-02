@@ -27,7 +27,7 @@ function applyStatic(){
   $("meTitle").textContent=t("meTitle"); $("meNote").textContent=t("meNote");
   $("meBizLb").textContent=t("meBizLb"); $("mBiz").placeholder=t("meBizPh");
   $("meCatLb").textContent=t("meCatLb"); $("mePlaceLb").textContent=t("mePlaceLb");
-  var mc=$("mCat"); mc.innerHTML=""; CATS.forEach(function(c){ var o=document.createElement("option"); o.textContent=L(c); mc.appendChild(o); });
+  var mc=$("mCat"); mc.innerHTML=""; CATS.forEach(function(c,ci){ var o=document.createElement("option"); o.value=ci; o.textContent=L(c); mc.appendChild(o); });
   var mp=$("mPlace"); mp.innerHTML="";
   [["street","placeStreet"],["mall","placeMall"],["club","placeClub"]].forEach(function(x){ var o=document.createElement("option"); o.value=x[0]; o.textContent=fmt(x[1], money(ADS_COST[x[0]])); mp.appendChild(o); });
   $("meLinkLb").textContent=t("meLinkLb"); $("mePayNote").textContent=t("payVirtual");
@@ -107,6 +107,7 @@ function render(){
 function actBtn(label, sub, fn, disabled){
   return '<button class="act" onclick="'+fn+'" '+(disabled?"disabled":"")+'>'+label+'<small>'+sub+'</small></button>';
 }
+function catText(a){ if(typeof a.cat==="number") return L(CATS[a.cat]||CATS[0]); return a.cat||""; }
 function linkHtml(url){ if(!url) return ""; var u=String(url); if(!/^https?:\/\//i.test(u)) u="https://"+u; return " · <a href='"+u+"' target='_blank' rel='noopener'>"+url+"</a>"; }
 function renderPanel(){
   var p=$("panel"), h="";
@@ -144,7 +145,7 @@ function renderPanel(){
   }
   if(S.loc==="club"){
     h="<h3>"+t("pClub")+"</h3>";
-    S.ads.filter(function(a){return a.place==="club";}).forEach(function(a){ h+="<div class='billboard'>"+fmt("sponsorF", a.biz, a.cat)+linkHtml(a.link)+"</div>"; });
+    S.ads.filter(function(a){return a.place==="club";}).forEach(function(a){ h+="<div class='billboard'>"+fmt("sponsorF", a.biz, catText(a))+linkHtml(a.link)+"</div>"; });
     h+="<div id='playlist'></div><div class='row'>"
       + actBtn(t("aDance"), fmt("aDanceS", money(20)), "doDance()")
       + actBtn(t("aClubChat"), fmt("aClubChatS", money(12)), "doClubChat()")
@@ -174,7 +175,7 @@ function renderPanel(){
   if(S.loc==="mall"){
     var recs=S.ads.filter(function(a){return a.place==="mall";});
     if(recs.length){ h="<h3>"+t("recH")+"</h3><div class='list'>";
-      recs.forEach(function(a){ h+="<div class='item'><span>🏪 <b>"+a.biz+"</b><small>"+a.cat+"</small>"+linkHtml(a.link)+"</span><button class='mini' onclick='visitBiz()'>"+t("visit")+"</button></div>"; });
+      recs.forEach(function(a){ h+="<div class='item'><span>🏪 <b>"+a.biz+"</b><small>"+catText(a)+"</small>"+linkHtml(a.link)+"</span><button class='mini' onclick='visitBiz()'>"+t("visit")+"</button></div>"; });
       h+="</div><h3 style='margin-top:12px'>"+t("shelfH")+"</h3>";
     } else h="<h3>"+t("shelfH")+"</h3>";
     h+="<div class='list'>";
@@ -187,7 +188,7 @@ function renderPanel(){
   }
   if(S.loc==="street"){
     h="<h3>"+t("pStreet")+"</h3>";
-    S.ads.filter(function(a){return a.place==="street";}).forEach(function(a){ h+="<div class='billboard'>"+fmt("boardF", a.biz, a.cat)+linkHtml(a.link)+"</div>"; });
+    S.ads.filter(function(a){return a.place==="street";}).forEach(function(a){ h+="<div class='billboard'>"+fmt("boardF", a.biz, catText(a))+linkHtml(a.link)+"</div>"; });
     h+="<div class='row'>"
       + actBtn(t("aWalk"), t("aWalkS"), "doWalk()")
       + actBtn(t("aMarket"), fmt("aMarketS", money(10)), "doMarket()")

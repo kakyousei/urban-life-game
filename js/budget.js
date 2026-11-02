@@ -2,10 +2,10 @@
 "use strict";
 var pendingReport=false;
 var BCATS=["food","transport","fun","shop"];
-var ALLCATS=["rent","food","transport","fun","shop","stay"];
+var ALLCATS=["rent","food","transport","fun","shop","stay","other"];
 function exp(cat, amt){ if(S.mExp && S.mExp[cat]!==undefined) S.mExp[cat]+=amt; }
 function inc(amt){ S.mInc=(S.mInc||0)+amt; }
-function freshExp(){ return {rent:0,food:0,transport:0,fun:0,shop:0,stay:0}; }
+function freshExp(){ return {rent:0,food:0,transport:0,fun:0,shop:0,stay:0,other:0}; }
 function closeMonth(ym){
   var tot=0; ALLCATS.forEach(function(c){ tot+=(S.mExp[c]||0); });
   var net=S.mInc-tot;

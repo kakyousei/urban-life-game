@@ -4,12 +4,12 @@ function doRest(){ S.energy=clamp(S.energy+18); S.mood=clamp(S.mood+6); advance(
 function doShower(){ S.hygiene=clamp(S.hygiene+38); advance(1); sayT("sShower"); render(); }
 function doNoodle(){ S.hunger=clamp(S.hunger+14); advance(1); sayT("sNoodle"); render(); }
 function doMove(i){
-  var rent=HOMES[i].rent;
+  var rent=allHomes()[i].rent;
   if(S.cash<rent){ sayT("sMoveNo", money(rent)); render(); return; }
   S.cash-=rent; exp("rent",rent); S.home=i; S.mood=clamp(S.mood+8);
-  sayT("sMoved", L(HOMES[i].name)); logT("lMove", L(HOMES[i].name)); render();
+  sayT("sMoved", L(allHomes()[i].name)); logT("lMove", L(allHomes()[i].name)); render();
 }
-function applyJob(i){ var j=JOBS[i]; S.job=j.title.zh; S.jobLevel=1; sayT("sHired", L(j.title)); logT("lHired", L(j.title)); render(); }
+function applyJob(i){ var j=allJobs()[i]; S.job=j.title.zh; S.jobLevel=1; sayT("sHired", L(j.title)); logT("lHired", L(j.title)); render(); }
 function doWork(){
   if(S.energy<22){ sayT("sTired"); render(); return; }
   var pay=jobPay(); S.cash+=pay; inc(pay); S.xp+=10; S.energy=clamp(S.energy-22); S.hunger=clamp(S.hunger-6);
@@ -35,7 +35,7 @@ function doHotel(tier){
   S.energy=100; S.hour=8; newDay(); render(); maybeReport();
 }
 function doTea(){ if(!spendCash(25,"fun")){ render(); return; } S.mood=clamp(S.mood+10); S.social=clamp(S.social+5); advance(1); sayT("sTea"); render(); }
-function doEat(i){ var f=FOODS[i]; if(!spendCash(f.price,"food")){ render(); return; } S.hunger=clamp(S.hunger+f.hunger); S.mood=clamp(S.mood+f.mood); advance(1); sayT("sEat", L(f.name), L(f.desc)); logT("lEat", L(f.name)); render(); }
+function doEat(i){ var f=allFoods()[i]; if(!spendCash(f.price,"food")){ render(); return; } S.hunger=clamp(S.hunger+f.hunger); S.mood=clamp(S.mood+f.mood); advance(1); sayT("sEat", L(f.name), L(f.desc)); logT("lEat", L(f.name)); render(); }
 function doKtv(tier){
   if(tier===0){ if(!spendCash(15,"fun")){ render(); return; } S.mood=clamp(S.mood+12); S.social=clamp(S.social+6); advance(2); sayT("sKtv0"); }
   else{
@@ -46,7 +46,7 @@ function doKtv(tier){
   logT("lKtv"); render();
 }
 function doBuy(i){
-  var g=GOODS[i]; if(!spendCash(g.price,"shop")){ render(); return; }
+  var g=allGoods()[i]; if(!spendCash(g.price,"shop")){ render(); return; }
   if(g.once) S.items.push(g.name.zh); else S.gifts+=1;
   S.mood=clamp(S.mood+6); sayT("sBuy", L(g.name), L(g.tag)); logT("lBuy", L(g.name)); advance(1); render();
 }
