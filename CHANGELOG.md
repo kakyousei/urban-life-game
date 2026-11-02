@@ -3,6 +3,15 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.3.3] — 2026-11-03
+
+### Fixed — entered amounts changed by a yen or two (6000 → 6001)
+- Display-currency inputs (build-my-city amounts, the budget dialog) were
+  converted to USD rounded to whole dollars. At roughly ¥7.1 per dollar,
+  that rounding is worth up to ¥3.5, so a round trip could add or lose a
+  few yen — 5999 and 6000 both came back as 6001. Amounts are now kept to
+  cent precision, so what you type is what you see.
+
 ## [1.3.2] — 2026-11-03
 
 ### Fixed — editor field label and confirmation text
@@ -233,6 +242,7 @@ try to end each real calendar month in the black.
 - In-game money is fictional and cannot be cashed out.
 
 [1.1.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.3
+[1.3.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.3
 [1.3.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.2
 [1.3.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.1
 [1.3.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.0
