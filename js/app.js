@@ -7,6 +7,7 @@ $("btnReset").onclick=function(){
   }
 };
 if($("cType")){ $("cType").addEventListener("change", cuTypeChanged); }
+if(typeof resyncClock==="function"){ try{ resyncClock(); }catch(e){} }
 render();
 fetchRates();
 if(typeof cuTypeChanged==="function"){ try{ cuTypeChanged(); }catch(e){} }

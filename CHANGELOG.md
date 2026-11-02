@@ -3,6 +3,22 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.2.1] — 2026-11-03
+
+### Fixed — the clock now follows your system time
+- Opening the game re-syncs the in-game date and clock to your device: the
+  date jumps to today (a month you missed is closed into its monthly report
+  first, if you played during it) and the hour is set to your current local
+  hour. New games also start at the real hour instead of 08:00. While you
+  play, actions still advance the clock as game time (a shift takes 4 hours,
+  travel takes 1, and so on).
+
+### Fixed — duplicated currency symbols, everywhere
+- Swept all remaining messages and diary lines that printed a literal "$" in
+  front of an amount that already carries its currency symbol ($¥…). 33
+  occurrences across the three languages (rent, promotion, repayments,
+  moving, event and work diary lines, and more).
+
 ## [1.2.0] — 2026-11-03
 
 ### Added — income categories
@@ -168,6 +184,7 @@ try to end each real calendar month in the black.
 - In-game money is fictional and cannot be cashed out.
 
 [1.1.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.3
+[1.2.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.1
 [1.2.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.0
 [1.1.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.2
 [1.1.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.1

@@ -4,7 +4,7 @@ function clamp(v){ return Math.max(0, Math.min(100, Math.round(v))); }
 function fmtN(n){ return n.toLocaleString("en-US"); }
 
 function fresh(){
-  return {started:true, name:"小拉", day:1, hour:8, cash:0, debt:0, energy:85, mood:70, hunger:70, hygiene:80, social:40,
+  return {started:true, name:"小拉", day:1, hour:(new Date().getHours()), cash:0, debt:0, energy:85, mood:70, hunger:70, hygiene:80, social:40,
     job:null, jobLevel:1, xp:0, jobLevels:{}, jobXp:{}, hiredBonus:[], loc:"home", home:0, transMode:"bus", items:[], gifts:0, friends:{ada:10,tun:5,fun:0,eme:0,bol:15},
     dateISO:todayISO(), daysPlayed:0, custom:{homes:[],jobs:[],foods:[],goods:[],places:[],transports:[],venues:{office:[],club:[],hotel:[],ktv:[]}}, customShops:[], customNpcs:[], ads:[], songs:[], diary:[], month:1, mInc:0, mExp:{rent:0,food:0,transport:0,fun:0,shop:0,stay:0,other:0}, mIncCats:{salary:0,side:0,extra:0}, budgets:{food:600,transport:200,fun:400,shop:300}, goal:2000, lastReport:null};
 }

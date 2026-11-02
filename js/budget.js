@@ -19,6 +19,15 @@ function closeMonth(ym){
   S.mInc=0; S.mIncCats=freshInc(); S.mExp=freshExp();
   pendingReport=true;
 }
+function resyncClock(){
+  var today=todayISO();
+  if(S.dateISO && S.dateISO<today){
+    var om=S.dateISO.slice(0,7);
+    if(om!==today.slice(0,7) && (S.mInc>0 || ALLCATS.some(function(c){ return (S.mExp[c]||0)>0; }))) closeMonth(om);
+    S.dateISO=today;
+  }
+  S.hour=new Date().getHours();
+}
 function maybeReport(){ if(pendingReport){ pendingReport=false; openModal("report"); } }
 function barRow(label, val, max, color, rightText){
   var pct=max>0 ? Math.min(100, Math.round(val/max*100)) : 0;
