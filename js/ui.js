@@ -128,8 +128,7 @@ function renderPanel(){
     h="<h3>"+t("pJobs")+"</h3><div class='list'>";
     allJobs().forEach(function(j,i){
       var cur=S.job===j.title.zh;
-      var lv=(S.jobLevels && S.jobLevels[j.title.zh]) || 0;
-      h+="<div class='item'><span><b>"+L(j.title)+"</b> · "+money(j.pay)+"<small>"+L(j.desc)+(lv ? " · Lv."+lv : "")+"</small></span>"
+      h+="<div class='item'><span><b>"+L(j.title)+"</b> · "+money(j.pay)+"<small>"+L(j.desc)+"</small></span>"
         + (cur ? "<b>"+t("onJob")+"</b>" : "<button class='mini' onclick='applyJob("+i+")'>"+t("apply")+"</button>") + "</div>";
     });
     h+="</div><p style='font-size:13px;opacity:.7'>"+t("jobsHint")+"</p>";

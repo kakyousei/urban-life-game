@@ -14,7 +14,7 @@ function cuTypeChanged(){
   else if(ty==="office"){ n1.style.display=""; $("cuNum1Lb").textContent=t("cuPayLb"); }
   else if(ty==="club"||ty==="hotel"||ty==="ktv"){ n1.style.display=""; $("cuNum1Lb").textContent=t("cuPriceLb"); }
 }
-function cuNum(id, dft){ var v=parseInt($(id).value,10); return isNaN(v)||v<0 ? dft : v; }
+function cuNum(id, dft){ var v=parseFloat($(id).value); return isNaN(v)||v<0 ? dft : Math.max(0, toUSD(v)); }
 function submitCustom(){
   var nm=$("cName").value.trim(); if(!nm){ $("cMsg").textContent=t("cuNeedName"); return; }
   var ty=$("cType").value, d=$("cDesc").value.trim();

@@ -23,8 +23,11 @@ function resyncClock(){
   var today=todayISO();
   if(S.dateISO && S.dateISO<today){
     var om=S.dateISO.slice(0,7);
-    if(om!==today.slice(0,7) && (S.mInc>0 || ALLCATS.some(function(c){ return (S.mExp[c]||0)>0; }))) closeMonth(om);
-    S.dateISO=today;
+    if(om!==today.slice(0,7)){
+      if(S.mInc>0 || ALLCATS.some(function(c){ return (S.mExp[c]||0)>0; })) closeMonth(om);
+      S.dateISO=today;
+      if(typeof chargeRent==="function") chargeRent();
+    } else S.dateISO=today;
   }
   S.hour=new Date().getHours();
 }

@@ -42,10 +42,10 @@ var GOODS=[
   {price:50,  once:false, name:L3("小礼物","ギフト","Small gift"),                       tag:L3("在咖啡馆送给朋友，好感大涨","カフェで友達に渡すと好感度アップ","Give it at the café for a big bond boost")}
 ];
 var HOMES=[
-  {rent:70,   name:L3("合租单间","シェアハウスの一部屋","Shared single room")},
-  {rent:180,  name:L3("一居室公寓","ワンルームアパート","One-bedroom flat")},
-  {rent:450,  name:L3("豪华公寓","高級アパート","Luxury apartment")},
-  {rent:1200, name:L3("海景别墅","海の見える邸宅","Ocean-view house")}
+  {rent:280,   name:L3("合租单间","シェアハウスの一部屋","Shared single room")},
+  {rent:720,  name:L3("一居室公寓","ワンルームアパート","One-bedroom flat")},
+  {rent:1800,  name:L3("豪华公寓","高級アパート","Luxury apartment")},
+  {rent:4800, name:L3("海景别墅","海の見える邸宅","Ocean-view house")}
 ];
 
 var CATS=[L3("餐饮","飲食","Food & drink"), L3("服饰","ファッション","Fashion"), L3("美容","美容","Beauty"), L3("电子产品","電化製品","Electronics"), L3("其他","その他","Other")];

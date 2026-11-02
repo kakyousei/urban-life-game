@@ -3,6 +3,24 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] — 2026-11-03
+
+### Changed — flat pay, monthly rent, currency-linked editor inputs
+- **Pay no longer grows with experience.** Shift pay is the job's fixed rate;
+  promotions and per-job levels are removed from play. The signing bonus is
+  unchanged in size (one shift's pay) but now counts as **other income** —
+  only shifts actually worked at the office count as **salary**.
+- **Rent is monthly.** Homes now charge once a month (at the calendar
+  month rollover, right after the previous month closes): $280 / $720 /
+  $1,800 / $4,800, the old weekly rents × 4. Debt interest (5%) applies on
+  the same monthly tick, moving house pays one month up front, and all
+  rent/debt wording switched from weekly to monthly. Returning after a
+  month away also charges the new month's rent on load.
+- **Build-my-city amounts follow the display currency**, like the budget
+  dialog already did: enter amounts in CNY under Chinese, JPY under
+  Japanese, USD under English — they are converted to USD at the live rate
+  when saved. Previously editor inputs were taken as raw USD.
+
 ## [1.2.2] — 2026-11-03
 
 ### Fixed — editor type labels showed raw keys (cuTypeOffice…)
@@ -197,6 +215,7 @@ try to end each real calendar month in the black.
 - In-game money is fictional and cannot be cashed out.
 
 [1.1.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.3
+[1.3.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.0
 [1.2.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.2
 [1.2.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.1
 [1.2.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.0

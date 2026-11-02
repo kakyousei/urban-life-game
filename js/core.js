@@ -49,7 +49,7 @@ function allHomes(){ return HOMES.concat(S.custom.homes); }
 function allJobs(){ return JOBS.concat(S.custom.jobs); }
 function allFoods(){ return FOODS.concat(S.custom.foods); }
 function allGoods(){ return GOODS.concat(S.custom.goods); }
-function jobPay(){ if(!S.job) return 0; var base=0, list=allJobs(); for(var i=0;i<list.length;i++) if(list[i].title.zh===S.job) base=list[i].pay; return Math.round(base*(1+0.25*(S.jobLevel-1))); }
+function jobPay(){ if(!S.job) return 0; var base=0, list=allJobs(); for(var i=0;i<list.length;i++) if(list[i].title.zh===S.job) base=list[i].pay; return base; }
 function jobTitleObj(){ var list=allJobs(); for(var i=0;i<list.length;i++) if(list[i].title.zh===S.job) return list[i]; return null; }
 function hasItem(zhName){ return S.items.indexOf(zhName)>=0; }
 function advance(h){
@@ -59,19 +59,20 @@ function advance(h){
   }
   if(S.energy<=5) sayT("sTired"); else if(S.hunger<=10) sayT("sHungry"); else if(S.hygiene<=15) sayT("sDirty");
 }
+function chargeRent(){
+  var h=allHomes()[S.home]; if(!h) return;
+  var rent=h.rent;
+  if(S.cash>=rent){ S.cash-=rent; exp("rent",rent); logT("lRent", money(rent)); sayT("sRentPaid", money(rent)); }
+  else { var short=rent-S.cash; S.cash=0; S.debt+=short; logT("lRentDebt", money(short)); sayT("sRentDebt", money(rent)); }
+  if(S.debt>0){ S.debt=Math.round(S.debt*1.05); }
+}
 function newDay(){
   var prevISO=S.dateISO;
   S.dateISO=isoAdd(S.dateISO, 1); S.day+=1; S.daysPlayed+=1;
   logT("lNewDay");
   S.ads=S.ads.filter(function(a){ a.days-=1; if(a.days<=0){ logT("lAdExp", a.biz); return false; } return true; });
   S.songs=S.songs.filter(function(g){ g.days-=1; if(g.days<=0){ logT("lSongExp", g.title); return false; } return true; });
-  if(S.dateISO.slice(0,7)!==prevISO.slice(0,7)){ closeMonth(prevISO.slice(0,7)); }
-  if(S.daysPlayed%7===0){
-    var rent=allHomes()[S.home].rent;
-    if(S.cash>=rent){ S.cash-=rent; exp("rent",rent); logT("lRent", money(rent)); sayT("sRentPaid", money(rent)); }
-    else { var short=rent-S.cash; S.cash=0; S.debt+=short; logT("lRentDebt", money(short)); sayT("sRentDebt", money(rent)); }
-    if(S.debt>0){ S.debt=Math.round(S.debt*1.05); }
-  }
+  if(S.dateISO.slice(0,7)!==prevISO.slice(0,7)){ closeMonth(prevISO.slice(0,7)); chargeRent(); }
   var r=Math.random();
   if(r<0.22){
     if(hasItem("太阳能供电套装")||hasItem("小型发电机")){ sayT("sEvPowerGen"); }
