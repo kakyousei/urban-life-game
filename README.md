@@ -1,4 +1,4 @@
-# 🌆 奈拉人生 · ナイラライフ · Naira Life
+# 🌆 都市人生 · アーバンライフ · Urban Life
 
 一款城市生活模拟游戏：在拉各斯找工作、赚钱、交朋友、泡夜店、住酒店、下馆子、唱 KTV、逛商场，把日子过成自己想要的样子。支持 **中文 / 日本語 / English** 三种语言切换。
 
@@ -8,7 +8,7 @@ A city life-simulation game set in Lagos — work, earn, make friends, hit the c
 
 ## 在线玩 / Play / 遊ぶ
 
-**https://kakyousei.github.io/naira-life-game/**
+**https://kakyousei.github.io/urban-life-game/**
 
 无需安装、无需注册，进度保存在浏览器本地。No install, no sign-up — progress saves in your browser.
 
@@ -40,7 +40,7 @@ A city life-simulation game set in Lagos — work, earn, make friends, hit the c
 
 GitHub Pages 是纯静态站点，不能安全保存密钥或确认支付。正式收费前需要：
 
-1. 注册 **Stripe** 和/或 **Paystack** 商户账号（尼日利亚本地收款优先 Paystack）
+1. 注册 **Stripe** 和/或 **Paystack** 商户账号（本地收款可用 Paystack，国际卡可用 Stripe）
 2. 一个小后端（云函数即可）：按金币包创建 Checkout / Payment Link；接收并验签 **Webhook**，支付成功后才发放金币
 3. 把 `payDemo()` 换成跳转收银台；商家广告费、歌手上架费同理
 4. 补齐价格与税费说明、退款政策、广告审核规则、歌手歌曲版权声明
