@@ -8,6 +8,14 @@ A **cost-of-living budget simulation** set in a big city: earn a salary, pay ren
 
 街暮らしの**生活費予算シミュレーション**。給料を稼ぎ、家賃を払い、食べて遊びながら、カテゴリごとに予算を決め、月末の収支レポートを見て貯金を目指します。**この給料で、この街で1か月やっていけるか？** を試せるゲームです。**中文 / 日本語 / English** の3言語対応。
 
+## 原作者与原始出处 / Original Author & Repository / 原作者と原典
+
+- **Original Author（原作者）**: Jingcheng He ([@kakyousei](https://github.com/kakyousei))
+- **Original Repository（原始仓库）**: https://github.com/kakyousei/urban-life-game
+- **Copyright**: © 2026 Jingcheng He (kakyousei) — 本项目以 [MIT License](LICENSE) 开源发布。
+
+欢迎 fork、提 issue 和 PR，一起完善这个项目。若转载或再发布，请保留版权声明，并注明原作者与原始仓库链接。Forks and contributions are welcome; when redistributing, please keep the copyright notice and link back to the original author and repository.
+
 ## 在线玩 / Play / 遊ぶ
 
 **https://kakyousei.github.io/urban-life-game/**
