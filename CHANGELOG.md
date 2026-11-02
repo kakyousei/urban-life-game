@@ -3,6 +3,17 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.1] — 2026-11-03
+
+### Added
+- **Merchant placements can include a URL**, just like singer placements: the
+  merchant form has a link field, and the URL is shown as a clickable link
+  wherever the ad appears (street billboards, mall picks, club sponsorship).
+  Song links in the club playlist are clickable now too.
+- **Virtual-payment notice**: both the merchant and singer dialogs state
+  clearly, right above the pay button and in all three languages, that payment
+  is virtual for now — settled in in-game cash, no real payment needed.
+
 ## [1.1.0] — 2026-11-03
 
 ### Changed
@@ -89,6 +100,7 @@ try to end each real calendar month in the black.
   pre-release versions migrate automatically.
 - In-game money is fictional and cannot be cashed out.
 
+[1.1.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.1
 [1.1.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.0
 [1.0.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.0.1
 [1.0.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.0.0

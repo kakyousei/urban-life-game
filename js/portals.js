@@ -6,7 +6,7 @@ function submitMerchant(){
   var place=$("mPlace").value;
   var cost=ADS_COST[place];
   if(!spendCash(cost)){ $("mMsg").textContent=fmt("meNoCoins", money(cost)); render(); return; }
-  S.ads.push({biz:biz, cat:$("mCat").value, place:place, days:3});
+  S.ads.push({biz:biz, cat:$("mCat").value, place:place, link:$("mLink").value.trim(), days:3});
   $("mMsg").textContent=fmt("meOk", biz);
   logT("lMerchant", biz); render();
 }

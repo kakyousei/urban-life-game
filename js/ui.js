@@ -30,11 +30,12 @@ function applyStatic(){
   var mc=$("mCat"); mc.innerHTML=""; CATS.forEach(function(c){ var o=document.createElement("option"); o.textContent=L(c); mc.appendChild(o); });
   var mp=$("mPlace"); mp.innerHTML="";
   [["street","placeStreet"],["mall","placeMall"],["club","placeClub"]].forEach(function(x){ var o=document.createElement("option"); o.value=x[0]; o.textContent=fmt(x[1], money(ADS_COST[x[0]])); mp.appendChild(o); });
+  $("meLinkLb").textContent=t("meLinkLb"); $("mePayNote").textContent=t("payVirtual");
   $("meGo").textContent=t("meGo");
   $("siTitle").textContent=t("siTitle"); $("siNote").textContent=t("siNote");
   $("siNameLb").textContent=t("siNameLb"); $("sName").placeholder=t("siNamePh");
   $("siSongLb").textContent=t("siSongLb"); $("sTitle").placeholder=t("siSongPh");
-  $("siLinkLb").textContent=t("siLinkLb"); $("siGo").textContent=fmt("siGo", money(SINGER_COST));
+  $("siLinkLb").textContent=t("siLinkLb"); $("siPayNote").textContent=t("payVirtual"); $("siGo").textContent=fmt("siGo", money(SINGER_COST));
   $("cuTitle").textContent=t("cuTitle"); $("cuNote").textContent=t("cuNote");
   $("cuTypeLb").textContent=t("cuTypeLb");
   var ctOpts=["cuTypeShop","cuTypeNpc","cuTypeHome","cuTypeJob","cuTypeFood","cuTypeGoods","cuTypePlace","cuTypeTransport"];
@@ -106,6 +107,7 @@ function render(){
 function actBtn(label, sub, fn, disabled){
   return '<button class="act" onclick="'+fn+'" '+(disabled?"disabled":"")+'>'+label+'<small>'+sub+'</small></button>';
 }
+function linkHtml(url){ if(!url) return ""; var u=String(url); if(!/^https?:\/\//i.test(u)) u="https://"+u; return " · <a href='"+u+"' target='_blank' rel='noopener'>"+url+"</a>"; }
 function renderPanel(){
   var p=$("panel"), h="";
   if(S.loc==="home"){
@@ -142,7 +144,7 @@ function renderPanel(){
   }
   if(S.loc==="club"){
     h="<h3>"+t("pClub")+"</h3>";
-    S.ads.filter(function(a){return a.place==="club";}).forEach(function(a){ h+="<div class='billboard'>"+fmt("sponsorF", a.biz, a.cat)+"</div>"; });
+    S.ads.filter(function(a){return a.place==="club";}).forEach(function(a){ h+="<div class='billboard'>"+fmt("sponsorF", a.biz, a.cat)+linkHtml(a.link)+"</div>"; });
     h+="<div id='playlist'></div><div class='row'>"
       + actBtn(t("aDance"), fmt("aDanceS", money(20)), "doDance()")
       + actBtn(t("aClubChat"), fmt("aClubChatS", money(12)), "doClubChat()")
@@ -172,7 +174,7 @@ function renderPanel(){
   if(S.loc==="mall"){
     var recs=S.ads.filter(function(a){return a.place==="mall";});
     if(recs.length){ h="<h3>"+t("recH")+"</h3><div class='list'>";
-      recs.forEach(function(a){ h+="<div class='item'><span>🏪 <b>"+a.biz+"</b><small>"+a.cat+"</small></span><button class='mini' onclick='visitBiz()'>"+t("visit")+"</button></div>"; });
+      recs.forEach(function(a){ h+="<div class='item'><span>🏪 <b>"+a.biz+"</b><small>"+a.cat+"</small>"+linkHtml(a.link)+"</span><button class='mini' onclick='visitBiz()'>"+t("visit")+"</button></div>"; });
       h+="</div><h3 style='margin-top:12px'>"+t("shelfH")+"</h3>";
     } else h="<h3>"+t("shelfH")+"</h3>";
     h+="<div class='list'>";
@@ -185,7 +187,7 @@ function renderPanel(){
   }
   if(S.loc==="street"){
     h="<h3>"+t("pStreet")+"</h3>";
-    S.ads.filter(function(a){return a.place==="street";}).forEach(function(a){ h+="<div class='billboard'>"+fmt("boardF", a.biz, a.cat)+"</div>"; });
+    S.ads.filter(function(a){return a.place==="street";}).forEach(function(a){ h+="<div class='billboard'>"+fmt("boardF", a.biz, a.cat)+linkHtml(a.link)+"</div>"; });
     h+="<div class='row'>"
       + actBtn(t("aWalk"), t("aWalkS"), "doWalk()")
       + actBtn(t("aMarket"), fmt("aMarketS", money(10)), "doMarket()")
@@ -231,7 +233,7 @@ function renderPanel(){
   if(pl){
     var lines="<div class='songline'>"+t("playlistBase")+"</div>";
     S.songs.forEach(function(g){
-      lines+="<div class='songline'>"+fmt("songHot", g.singer, g.title, g.link?" · "+g.link:"", g.days)+"</div>";
+      lines+="<div class='songline'>"+fmt("songHot", g.singer, g.title, linkHtml(g.link), g.days)+"</div>";
     });
     pl.innerHTML=lines;
   }
