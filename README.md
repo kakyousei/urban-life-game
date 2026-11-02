@@ -2,6 +2,8 @@
 
 一款**生活成本预算模拟**游戏：在城市里找工作赚钱、付房租、吃喝玩乐，同时给每类开支设预算、看月末收支报告、努力把钱存下来。它回答一个很实际的问题：**拿这份工资，在这座城市到底能不能过好一个月？** 支持 **中文 / 日本語 / English** 三种语言切换。
 
+**v1.0.0 正式发布** · [更新日志](CHANGELOG.md) · [MIT 许可](LICENSE)
+
 A **cost-of-living budget simulation** set in a big city: earn a salary, pay rent, eat, go out — while setting budgets per category, reading a monthly income-and-spending report, and trying to save. It answers a practical question: **can this salary actually carry a good month in this city?** Playable in **Chinese / Japanese / English**.
 
 街暮らしの**生活費予算シミュレーション**。給料を稼ぎ、家賃を払い、食べて遊びながら、カテゴリごとに予算を決め、月末の収支レポートを見て貯金を目指します。**この給料で、この街で1か月やっていけるか？** を試せるゲームです。**中文 / 日本語 / English** の3言語対応。
@@ -24,20 +26,23 @@ A **cost-of-living budget simulation** set in a big city: earn a salary, pay ren
 - 🌃 **夜生活与日常**：夜店、酒店、餐厅、KTV、商场、咖啡馆、街道夜市
 - ☕ **朋友系统**：聊天、送礼涨好感；本地食物 Jollof Rice、Suya 等
 - 📊 **预算系统（核心玩法）**：所有收支按类别自动记账（房租/餐饮/交通/娱乐/购物/住宿）；给餐饮、交通、娱乐、购物设月度上限，超支标红
-- 📋 **月度收支报告**：每月 28 天，月末自动结算——总收入、总支出、结余、储蓄率、支出构成、超支清单，还有 S/A/B/C/D 评级和一句点评
+- 📅 **真实日历**：游戏从今天的真实日期开始，天数按真实日历推进；每月在真实月末结算，月份天数与现实一致
+- 💱 **多币种显示**：金额以美元为基准存储，按界面语言自动换算显示——中文 ¥（人民币）、日本語 ¥（日元）、English $（美元），汇率联网自动获取（open.er-api.com），离线时用默认汇率。全部花费都用货币结算，没有金币
+- 🏗️ **全部设施可自建**：不只是小店和朋友——住处、工作、餐厅食物、商品、常去的场所（放松/社交/学习/锻炼）都能按你自己的真实生活添加
+- 📋 **月度收支报告**：每个自然月末自动结算——总收入、总支出、结余、储蓄率、支出构成、超支清单，还有 S/A/B/C/D 评级和一句点评
 - 🎯 **存钱目标**：设定目标金额，预算栏实时显示进度
 
 **Three starts** (silver spoon / working class / hustler in debt), jobs with promotions, housing with weekly rent and interest-bearing debt, five needs (energy, mood, food, hygiene, social), transport fares and traffic, everyday events like power cuts — and clubs, hotels, restaurants, karaoke, malls and friends.
 
 ## ✏️ 打造我的城市（玩家共创）
 
-把你熟悉的街道、常去的小店、生活里的朋友加进游戏：小店出现在「街道」，朋友出现在「咖啡馆」。Add your own shops and people — shops appear under Streets, friends at the Café.
+把你真实生活里的一切加进游戏：小店、朋友、住处、工作、餐厅食物、商品、常去的场所。Add your own everything — shops, friends, homes, jobs, dishes, products and places.
 
 ## 🪙 金币、商家与歌手
 
-- **充值**：4 个金币包，Stripe / Paystack 两个入口。⚠️ 公开版为**演示模式**，不会真实扣款
-- **商家入驻**：街道广告牌 / 商场推荐位 / 夜店赞助（20/30/40 金币 · 3 天）
-- **歌手入驻**：25 金币把自己的歌放进夜店播放列表「正在热播」（3 天）
+- 全部花费都用货币结算，**没有金币、没有充值**
+- **商家入驻**：街道广告牌 $100 / 商场推荐位 $150 / 夜店赞助 $200（各 3 天），演示版用游戏内现金结算
+- **歌手入驻**：$120 把自己的歌放进夜店播放列表「正在热播」（3 天），演示版同样用现金结算
 
 ## 💳 正式接真实支付（上线清单）
 
@@ -53,7 +58,19 @@ Production payments need merchant accounts plus a small backend that verifies we
 
 ## 技术 / Tech
 
-单个 HTML 文件（原生 CSS + JavaScript），无构建步骤；状态、自建内容、广告与歌单存放在浏览器 localStorage。Single-file HTML, no build step; all state lives in localStorage.
+模块化静态站点（原生 CSS + JavaScript，**无构建步骤**）：
+
+```
+index.html        页面结构
+css/style.css     样式
+js/i18n.js        三语言文案      js/fx.js      货币与汇率
+js/data.js        内置数据        js/core.js    状态与日历
+js/ui.js          界面渲染        js/actions.js 玩法动作
+js/budget.js      预算与月报      js/portals.js 商家/歌手
+js/custom.js      自建设施        js/app.js     启动
+```
+
+状态、自建内容、广告与歌单存放在浏览器 localStorage；旧版本存档会自动迁移。Modular static site, no build step; state lives in localStorage with automatic save migration.
 
 ## 许可 / License
 
