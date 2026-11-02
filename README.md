@@ -1,10 +1,10 @@
 # 🌆 都市人生 · アーバンライフ · Urban Life
 
-一款城市生活模拟游戏：在拉各斯找工作、赚钱、交朋友、泡夜店、住酒店、下馆子、唱 KTV、逛商场，把日子过成自己想要的样子。支持 **中文 / 日本語 / English** 三种语言切换。
+一款**生活成本预算模拟**游戏：在城市里找工作赚钱、付房租、吃喝玩乐，同时给每类开支设预算、看月末收支报告、努力把钱存下来。它回答一个很实际的问题：**拿这份工资，在这座城市到底能不能过好一个月？** 支持 **中文 / 日本語 / English** 三种语言切换。
 
-A city life-simulation game set in Lagos — work, earn, make friends, hit the clubs, book hotels, eat out, sing karaoke and shop, and live the life you want. Playable in **Chinese / Japanese / English**.
+A **cost-of-living budget simulation** set in a big city: earn a salary, pay rent, eat, go out — while setting budgets per category, reading a monthly income-and-spending report, and trying to save. It answers a practical question: **can this salary actually carry a good month in this city?** Playable in **Chinese / Japanese / English**.
 
-ラゴスを舞台にした街暮らしシミュレーション。仕事、友達、クラブ、ホテル、食事、カラオケ、買い物――自分の生きたい人生を。**中文 / 日本語 / English** の3言語対応。
+街暮らしの**生活費予算シミュレーション**。給料を稼ぎ、家賃を払い、食べて遊びながら、カテゴリごとに予算を決め、月末の収支レポートを見て貯金を目指します。**この給料で、この街で1か月やっていけるか？** を試せるゲームです。**中文 / 日本語 / English** の3言語対応。
 
 ## 在线玩 / Play / 遊ぶ
 
@@ -23,6 +23,9 @@ A city life-simulation game set in Lagos — work, earn, make friends, hit the c
 - ⚡ **生活事件**：停电（买发电机/太阳能可以免疫）、临时小活、朋友请客
 - 🌃 **夜生活与日常**：夜店、酒店、餐厅、KTV、商场、咖啡馆、街道夜市
 - ☕ **朋友系统**：聊天、送礼涨好感；本地食物 Jollof Rice、Suya 等
+- 📊 **预算系统（核心玩法）**：所有收支按类别自动记账（房租/餐饮/交通/娱乐/购物/住宿）；给餐饮、交通、娱乐、购物设月度上限，超支标红
+- 📋 **月度收支报告**：每月 28 天，月末自动结算——总收入、总支出、结余、储蓄率、支出构成、超支清单，还有 S/A/B/C/D 评级和一句点评
+- 🎯 **存钱目标**：设定目标金额，预算栏实时显示进度
 
 **Three starts** (silver spoon / working class / hustler in debt), jobs with promotions, housing with weekly rent and interest-bearing debt, five needs (energy, mood, food, hygiene, social), transport fares and traffic, everyday events like power cuts — and clubs, hotels, restaurants, karaoke, malls and friends.
 

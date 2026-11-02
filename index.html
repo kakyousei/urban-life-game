@@ -126,6 +126,7 @@
   <span class="chip">🪙 <span id="vCoins">0</span></span>
   <span class="chip debt" id="debtChip" style="display:none">💳 $<span id="vDebt">0</span></span>
   <button class="btn" id="btnTopup" onclick="openModal('topup')"></button>
+  <button class="btn ghost" id="btnBudget" onclick="openModal('budget')"></button>
 </div>
 
 <div class="wrap">
@@ -161,6 +162,10 @@
       <h3 id="hHome"></h3>
       <div class="item"><span id="homeInfo"></span></div>
     </div>
+    <div class="sec">
+      <h3 id="hBudget"></h3>
+      <div id="budgetPanel"></div>
+    </div>
     <div class="sec" id="debtSec" style="display:none">
       <h3 id="hDebt"></h3>
       <div class="item"><span id="debtInfo"></span><button class="mini pink" id="btnRepay" onclick="doRepay()"></button></div>
@@ -184,6 +189,31 @@
 </div>
 
 <footer id="footNote"></footer>
+
+<div class="overlay" id="modal-budget">
+  <div class="modal">
+    <button class="x" onclick="closeModal('budget')">✕</button>
+    <h3 id="bTitle"></h3>
+    <p class="note" id="bNote"></p>
+    <h4 id="bCur" style="margin:10px 0 6px"></h4>
+    <div id="bSummary" style="font-size:14px; line-height:1.9"></div>
+    <label id="bFoodLb"></label><input id="bFood" type="number" min="0" step="500">
+    <label id="bTransportLb"></label><input id="bTransport" type="number" min="0" step="500">
+    <label id="bFunLb"></label><input id="bFun" type="number" min="0" step="500">
+    <label id="bShopLb"></label><input id="bShop" type="number" min="0" step="500">
+    <label id="bGoalLb"></label><input id="bGoal" type="number" min="0" step="1000">
+    <div class="gate"><button class="stripe" style="background:var(--teal); color:#04382b;" onclick="saveBudget()" id="bSave"></button></div>
+    <p class="note" id="bMsg"></p>
+  </div>
+</div>
+
+<div class="overlay" id="modal-report">
+  <div class="modal">
+    <button class="x" onclick="closeModal('report')">✕</button>
+    <h3 id="rTitle"></h3>
+    <div id="rBody" style="font-size:14.5px; line-height:1.8"></div>
+  </div>
+</div>
 
 <div class="overlay" id="modal-start">
   <div class="modal">
@@ -259,7 +289,7 @@
 "use strict";
 var STR = {
 zh:{
- title:"🌆 都市人生", sub:"找工作、交朋友、泡夜店、住酒店、唱 KTV——在这座城市，过你想要的生活",
+ title:"🌆 都市人生", sub:"生活成本预算模拟：找工作赚钱、付房租、吃喝玩乐，再想办法把钱存下来",
  dayF:"第 {0} 天 · {1}", diaryDayF:"第 {0} 天", coinsW:"金币", topup:"🪙 充值金币",
  btnCustom:"✏️ 打造我的城市", btnMerchant:"🏪 商家入驻 / 投广告", btnSinger:"🎤 歌手入驻",
  stEnergy:"⚡ 精力", stMood:"😊 心情", stHunger:"🍔 饱腹", stHygiene:"🧼 清洁", stSocial:"💬 社交",
@@ -327,10 +357,19 @@ zh:{
  cuTitle:"✏️ 打造我的城市", cuNote:"把你熟悉的街道、常去的小店、生活里的朋友放进游戏。添加后：小店会出现在「街道」，朋友会出现在「咖啡馆」。",
  cuTypeLb:"类型", cuTypeShop:"🏪 小店 / 摊位", cuTypeNpc:"🧑 朋友 / 熟人", cuNameLb:"名称", cuNamePh:"例如：楼下王姐的烧烤摊 / 发小阿明",
  cuDescLb:"所在街道或一句话介绍", cuDescPh:"例如：Surulere 夜市口，烤串一绝", cuGo:"添加到我的城市",
- cuNeedName:"请填写名称。", cuOkShop:"✅ 已添加！去「街道」就能看到它。", cuOkNpc:"✅ 已添加！去「咖啡馆」就能见到 TA。", addedH:"已添加"
+ cuNeedName:"请填写名称。", cuOkShop:"✅ 已添加！去「街道」就能看到它。", cuOkNpc:"✅ 已添加！去「咖啡馆」就能见到 TA。", addedH:"已添加",
+ btnBudget:"📊 预算", hBudget:"📊 本月预算", monthW:"第 {0} 个月",
+ catRent:"房租", catFood:"餐饮", catTransport:"交通", catFun:"娱乐", catShop:"购物", catStay:"住宿",
+ budOver:"超支", goalW:"🎯 存钱目标", lMonth:"第{0}个月结算完成：本月结余 {1}。",
+ bTitle:"📊 预算与目标", bNote:"给每个类别设一个月度上限，花超了预算栏会标红。每个月有 28 天，月末会自动生成一份收支报告，看看你的钱都去哪儿了。",
+ bGoalLb:"存钱目标（希望现金达到）", bSave:"保存预算", bSaved:"✅ 已保存。", bCur:"本月实时收支",
+ rpTitle:"📋 月度收支报告", rpIncome:"总收入", rpExpense:"总支出", rpNet:"本月结余", rpRate:"储蓄率",
+ rpCats:"支出构成", rpOverT:"超支的类别", rpNone:"没有超支，控制得不错。", rpGrade:"本月评级",
+ gS:"存钱达人！玩得开心，还存下了不少。", gA:"收支健康，离存钱目标又近了一步。", gB:"基本收支平衡，下个月试着多存一点。",
+ gC:"有点入不敷出，先砍娱乐和购物吧。", gD:"月光还倒贴！先保住工作和房租，其他往后放。"
 },
 ja:{
- title:"🌆 アーバンライフ", sub:"仕事、友達、ナイトクラブ、ホテル、カラオケ——この街で、自分の生きたい人生を",
+ title:"🌆 アーバンライフ", sub:"生活費予算シミュレーション：稼いで、家賃を払って、楽しんで、そして貯める",
  dayF:"{0}日目 · {1}", diaryDayF:"{0}日目", coinsW:"コイン", topup:"🪙 コインをチャージ",
  btnCustom:"✏️ 自分の街を作る", btnMerchant:"🏪 お店の出店 / 広告", btnSinger:"🎤 歌手として参加",
  stEnergy:"⚡ スタミナ", stMood:"😊 気分", stHunger:"🍔 満腹", stHygiene:"🧼 清潔", stSocial:"💬 社交",
@@ -398,10 +437,19 @@ ja:{
  cuTitle:"✏️ 自分の街を作る", cuNote:"馴染みの通り、よく行くお店、生活の中の友達をゲームに入れられます。お店は「街」に、友達は「カフェ」に現れます。",
  cuTypeLb:"種類", cuTypeShop:"🏪 お店 / 屋台", cuTypeNpc:"🧑 友達 / 知り合い", cuNameLb:"名前", cuNamePh:"例：近所の焼き鳥屋 / 幼なじみのアキラ",
  cuDescLb:"場所や一言紹介", cuDescPh:"例：Surulere の夜市の入口、串が絶品", cuGo:"自分の街に追加",
- cuNeedName:"名前を入力してください。", cuOkShop:"✅ 追加しました！「街」で見られます。", cuOkNpc:"✅ 追加しました！「カフェ」で会えます。", addedH:"追加済み"
+ cuNeedName:"名前を入力してください。", cuOkShop:"✅ 追加しました！「街」で見られます。", cuOkNpc:"✅ 追加しました！「カフェ」で会えます。", addedH:"追加済み",
+ btnBudget:"📊 予算", hBudget:"📊 今月の予算", monthW:"{0} か月目",
+ catRent:"家賃", catFood:"食費", catTransport:"交通費", catFun:"娯楽", catShop:"買い物", catStay:"宿泊",
+ budOver:"超過", goalW:"🎯 貯金目標", lMonth:"{0} か月目の締め：収支は {1} でした。",
+ bTitle:"📊 予算と目標", bNote:"カテゴリごとに月の上限を決めましょう。超えると予算バーが赤くなります。1か月は28日で、月末に自動で収支レポートが出ます。",
+ bGoalLb:"貯金目標（現金の到達額）", bSave:"予算を保存", bSaved:"✅ 保存しました。", bCur:"今月の収支（途中）",
+ rpTitle:"📋 月次収支レポート", rpIncome:"収入合計", rpExpense:"支出合計", rpNet:"収支", rpRate:"貯蓄率",
+ rpCats:"支出の内訳", rpOverT:"超過した項目", rpNone:"超過なし。よく管理できています。", rpGrade:"今月の評価",
+ gS:"貯金の達人！楽しみながらしっかり貯められました。", gA:"健全な収支。目標に一歩前進。", gB:"ほぼトントン。来月はもう少し貯めてみよう。",
+ gC:"少し赤字。まず娯楽と買い物を絞ろう。", gD:"大きな赤字！まず仕事と家賃を守って。"
 },
 en:{
- title:"🌆 Urban Life", sub:"Find a job, make friends, hit the club, book a hotel, sing karaoke — live the life you want in this city",
+ title:"🌆 Urban Life", sub:"A cost-of-living budget sim: earn, pay the rent, enjoy the city — and try to save",
  dayF:"Day {0} · {1}", diaryDayF:"Day {0}", coinsW:"Coins", topup:"🪙 Top up coins",
  btnCustom:"✏️ Build my city", btnMerchant:"🏪 For businesses / Ads", btnSinger:"🎤 For singers",
  stEnergy:"⚡ Energy", stMood:"😊 Mood", stHunger:"🍔 Food", stHygiene:"🧼 Hygiene", stSocial:"💬 Social",
@@ -469,7 +517,16 @@ en:{
  cuTitle:"✏️ Build my city", cuNote:"Put the streets you know, the stalls you love and the people in your life into the game. Shops appear under “Streets”, friends under “Café”.",
  cuTypeLb:"Type", cuTypeShop:"🏪 Shop / stall", cuTypeNpc:"🧑 Friend / someone you know", cuNameLb:"Name", cuNamePh:"e.g. Mrs Wang's BBQ stall / my friend Amin",
  cuDescLb:"Street or one-line intro", cuDescPh:"e.g. Surulere night-market entrance, best skewers", cuGo:"Add to my city",
- cuNeedName:"Please enter a name.", cuOkShop:"✅ Added! Find it under “Streets”.", cuOkNpc:"✅ Added! Meet them at the “Café”.", addedH:"Added"
+ cuNeedName:"Please enter a name.", cuOkShop:"✅ Added! Find it under “Streets”.", cuOkNpc:"✅ Added! Meet them at the “Café”.", addedH:"Added",
+ btnBudget:"📊 Budget", hBudget:"📊 This month's budget", monthW:"Month {0}",
+ catRent:"Rent", catFood:"Food", catTransport:"Transport", catFun:"Fun", catShop:"Shopping", catStay:"Stays",
+ budOver:"over", goalW:"🎯 Savings goal", lMonth:"Month {0} closed: net {1}.",
+ bTitle:"📊 Budget & goals", bNote:"Set a monthly cap per category — go over and the budget bar turns red. A month has 28 days; at month's end you get a full income-and-spending report.",
+ bGoalLb:"Savings goal (cash to reach)", bSave:"Save budget", bSaved:"✅ Saved.", bCur:"This month so far",
+ rpTitle:"📋 Monthly report", rpIncome:"Total income", rpExpense:"Total spending", rpNet:"Net", rpRate:"Savings rate",
+ rpCats:"Spending breakdown", rpOverT:"Over budget", rpNone:"Nothing over budget — nicely managed.", rpGrade:"Grade",
+ gS:"Savings master — you had fun and still banked money.", gA:"Healthy balance — one step closer to your goal.", gB:"Roughly break-even — try saving a little more next month.",
+ gC:"Slightly in the red — trim fun and shopping first.", gD:"Deep in the red — protect the job and the rent first."
 }
 };
 </script>
@@ -543,7 +600,7 @@ function fmtN(n){ return n.toLocaleString("en-US"); }
 function fresh(){
   return {started:false, name:"小拉", day:1, hour:8, cash:0, coins:0, debt:0, energy:85, mood:70, hunger:70, hygiene:80, social:40,
     job:null, jobLevel:1, xp:0, loc:"home", home:1, items:[], gifts:0, friends:{ada:10,tun:5,fun:0,eme:0,bol:15},
-    customShops:[], customNpcs:[], ads:[], songs:[], diary:[]};
+    customShops:[], customNpcs:[], ads:[], songs:[], diary:[], month:1, mInc:0, mExp:{rent:0,food:0,transport:0,fun:0,shop:0,stay:0}, budgets:{food:20000,transport:8000,fun:15000,shop:10000}, goal:50000, lastReport:null};
 }
 var S;
 try{ S=JSON.parse(localStorage.getItem(KEY))||JSON.parse(localStorage.getItem(OLDKEY))||null; }catch(e){ S=null; }
@@ -577,9 +634,10 @@ function newDay(){
   S.day+=1; logT("lNewDay");
   S.ads=S.ads.filter(function(a){ a.days-=1; if(a.days<=0){ logT("lAdExp", a.biz); return false; } return true; });
   S.songs=S.songs.filter(function(g){ g.days-=1; if(g.days<=0){ logT("lSongExp", g.title); return false; } return true; });
+  if(S.day%28===1 && S.day>1){ closeMonth(); }
   if(S.day%7===1 && S.day>1){
     var rent=HOMES[S.home].rent;
-    if(S.cash>=rent){ S.cash-=rent; logT("lRent", fmtN(rent)); sayT("sRentPaid", fmtN(rent)); }
+    if(S.cash>=rent){ S.cash-=rent; exp("rent",rent); logT("lRent", fmtN(rent)); sayT("sRentPaid", fmtN(rent)); }
     else { var short=rent-S.cash; S.cash=0; S.debt+=short; logT("lRentDebt", fmtN(short)); sayT("sRentDebt", fmtN(rent)); }
     if(S.debt>0){ S.debt=Math.round(S.debt*1.05); }
   }
@@ -587,16 +645,16 @@ function newDay(){
   if(r<0.22){
     if(hasItem("太阳能供电套装")||hasItem("小型发电机")){ logT("lNewDay"); sayT("sEvPowerGen"); }
     else { S.mood=clamp(S.mood-6); sayT("sEvPower"); }
-  } else if(r<0.34){ var gig=2000+Math.floor(Math.random()*3)*500; S.cash+=gig; sayT("sEvGig", fmtN(gig)); }
+  } else if(r<0.34){ var gig=2000+Math.floor(Math.random()*3)*500; S.cash+=gig; inc(gig); sayT("sEvGig", fmtN(gig)); }
   else if(r<0.42){ S.hunger=clamp(S.hunger+12); sayT("sEvTreat"); }
 }
-function spendCash(n){ if(S.cash<n){ sayT("sNoCash"); return false; } S.cash-=n; return true; }
+function spendCash(n, cat){ if(S.cash<n){ sayT("sNoCash"); return false; } S.cash-=n; if(cat) exp(cat, n); return true; }
 function spendCoins(n){ if(S.coins<n){ sayT("sNoCoins"); return false; } S.coins-=n; return true; }
 function go(id){
   var from=loc(), to=null;
   for(var i=0;i<LOCS.length;i++) if(LOCS[i].id===id) to=LOCS[i];
   if(to && from.id!==to.id && from.dist!=="any" && to.dist!=="any" && from.dist!==to.dist){
-    if(S.cash>=250){ S.cash-=250; sayT("sFare"); }
+    if(S.cash>=250){ S.cash-=250; exp("transport",250); sayT("sFare"); }
     else { advance(1); S.energy=clamp(S.energy-6); sayT("sWalkFar"); }
     if(Math.random()<0.18){ advance(1); S.mood=clamp(S.mood-5); sayT("sTraffic"); }
   }
@@ -631,6 +689,12 @@ function applyStatic(){
   $("hBag").textContent=t("hBag"); $("hFriends").textContent=t("hFriends"); $("hDiary").textContent=t("hDiary");
   $("lbXp").textContent=t("xpW"); $("btnRepay").textContent=t("repayBtn"); $("btnReset").textContent=t("reset");
   $("footNote").innerHTML=t("foot");
+  $("btnBudget").textContent=t("btnBudget");
+  $("bTitle").textContent=t("bTitle"); $("bNote").textContent=t("bNote"); $("bCur").textContent=t("bCur");
+  $("bFoodLb").textContent=t("catFood"); $("bTransportLb").textContent=t("catTransport");
+  $("bFunLb").textContent=t("catFun"); $("bShopLb").textContent=t("catShop");
+  $("bGoalLb").textContent=t("bGoalLb"); $("bSave").textContent=t("bSave");
+  $("rTitle").textContent=t("rpTitle");
   $("stTitle").textContent=t("stTitle"); $("stNote").textContent=t("stNote");
   $("tpTitle").textContent=t("tpTitle"); $("tpNote").innerHTML=t("tpNote");
   $("tpStripe").textContent=t("tpStripe"); $("tpPaystack").textContent=t("tpPaystack");
@@ -711,6 +775,7 @@ function render(){
   });
   renderDiary();
   renderPanel();
+  if(typeof renderBudgetPanel==="function") renderBudgetPanel();
   save();
 }
 function actBtn(label, sub, fn, disabled){
@@ -830,20 +895,20 @@ function renderPanel(){
   }
 }
 /* ---------- actions ---------- */
-function doSleep(){ S.energy=100; S.hygiene=clamp(S.hygiene+10); S.hunger=clamp(S.hunger-8); S.hour=8; newDay(); sayT("sSleep"); logT("lSleep"); render(); }
+function doSleep(){ S.energy=100; S.hygiene=clamp(S.hygiene+10); S.hunger=clamp(S.hunger-8); S.hour=8; newDay(); sayT("sSleep"); logT("lSleep"); render(); maybeReport(); }
 function doRest(){ S.energy=clamp(S.energy+18); S.mood=clamp(S.mood+6); advance(2); sayT("sRest"); render(); }
 function doShower(){ S.hygiene=clamp(S.hygiene+38); advance(1); sayT("sShower"); render(); }
 function doNoodle(){ S.hunger=clamp(S.hunger+14); advance(1); sayT("sNoodle"); render(); }
 function doMove(i){
   var rent=HOMES[i].rent;
   if(S.cash<rent){ sayT("sMoveNo", fmtN(rent)); render(); return; }
-  S.cash-=rent; S.home=i; S.mood=clamp(S.mood+8);
+  S.cash-=rent; exp("rent",rent); S.home=i; S.mood=clamp(S.mood+8);
   sayT("sMoved", L(HOMES[i].name)); logT("lMove", L(HOMES[i].name)); render();
 }
 function applyJob(i){ var j=JOBS[i]; S.job=j.title.zh; S.jobLevel=1; sayT("sHired", L(j.title)); logT("lHired", L(j.title)); render(); }
 function doWork(){
   if(S.energy<22){ sayT("sTired"); render(); return; }
-  var pay=jobPay(); S.cash+=pay; S.xp+=10; S.energy=clamp(S.energy-22); S.hunger=clamp(S.hunger-6);
+  var pay=jobPay(); S.cash+=pay; inc(pay); S.xp+=10; S.energy=clamp(S.energy-22); S.hunger=clamp(S.hunger-6);
   advance(4); logT("lWork", fmtN(pay));
   var jt=jobTitleObj();
   if(jt && S.xp>=S.jobLevel*40 && S.jobLevel<5){ S.jobLevel+=1; sayT("sPromoted", L(jt.title), S.jobLevel, fmtN(jobPay())); logT("lPromote", L(jt.title), S.jobLevel); }
@@ -851,9 +916,9 @@ function doWork(){
   render();
 }
 function doOfficeChat(){ S.social=clamp(S.social+8); S.energy=clamp(S.energy-4); advance(1); sayT("sOfficeChat"); render(); }
-function doDance(){ if(!spendCash(2000)){ render(); return; } S.mood=clamp(S.mood+18); S.social=clamp(S.social+12); S.energy=clamp(S.energy-15); advance(2); sayT("sDance"); logT("lDance"); render(); }
+function doDance(){ if(!spendCash(2000,"fun")){ render(); return; } S.mood=clamp(S.mood+18); S.social=clamp(S.social+12); S.energy=clamp(S.energy-15); advance(2); sayT("sDance"); logT("lDance"); render(); }
 function doClubChat(){
-  if(!spendCash(1200)){ render(); return; }
+  if(!spendCash(1200,"fun")){ render(); return; }
   S.social=clamp(S.social+10); S.mood=clamp(S.mood+6); advance(1);
   var n=NPCS[Math.floor(Math.random()*NPCS.length)];
   S.friends[n.id]=clamp((S.friends[n.id]||0)+4);
@@ -861,14 +926,14 @@ function doClubChat(){
 }
 function doVip(){ if(!spendCoins(30)){ render(); return; } S.mood=clamp(S.mood+26); S.social=clamp(S.social+16); advance(2); sayT("sVip"); logT("lVip"); render(); }
 function doHotel(tier){
-  if(tier===0){ if(!spendCash(8000)){ render(); return; } S.mood=clamp(S.mood+8); S.hygiene=100; sayT("sHotelStd"); logT("lHotel", t("hotelStd")); }
+  if(tier===0){ if(!spendCash(8000,"stay")){ render(); return; } S.mood=clamp(S.mood+8); S.hygiene=100; sayT("sHotelStd"); logT("lHotel", t("hotelStd")); }
   else { if(!spendCoins(40)){ render(); return; } S.mood=clamp(S.mood+22); S.hunger=clamp(S.hunger+15); S.hygiene=100; sayT("sHotelLux"); logT("lHotel", t("hotelLux")); }
-  S.energy=100; S.hour=8; newDay(); render();
+  S.energy=100; S.hour=8; newDay(); render(); maybeReport();
 }
-function doTea(){ if(!spendCash(3000)){ render(); return; } S.mood=clamp(S.mood+10); S.social=clamp(S.social+5); advance(1); sayT("sTea"); render(); }
-function doEat(i){ var f=FOODS[i]; if(!spendCash(f.price)){ render(); return; } S.hunger=clamp(S.hunger+f.hunger); S.mood=clamp(S.mood+f.mood); advance(1); sayT("sEat", L(f.name), L(f.desc)); logT("lEat", L(f.name)); render(); }
+function doTea(){ if(!spendCash(3000,"fun")){ render(); return; } S.mood=clamp(S.mood+10); S.social=clamp(S.social+5); advance(1); sayT("sTea"); render(); }
+function doEat(i){ var f=FOODS[i]; if(!spendCash(f.price,"food")){ render(); return; } S.hunger=clamp(S.hunger+f.hunger); S.mood=clamp(S.mood+f.mood); advance(1); sayT("sEat", L(f.name), L(f.desc)); logT("lEat", L(f.name)); render(); }
 function doKtv(tier){
-  if(tier===0){ if(!spendCash(1500)){ render(); return; } S.mood=clamp(S.mood+12); S.social=clamp(S.social+6); advance(2); sayT("sKtv0"); }
+  if(tier===0){ if(!spendCash(1500,"fun")){ render(); return; } S.mood=clamp(S.mood+12); S.social=clamp(S.social+6); advance(2); sayT("sKtv0"); }
   else{
     if(!spendCoins(20)){ render(); return; }
     S.mood=clamp(S.mood+24); S.social=clamp(S.social+14); advance(3);
@@ -877,7 +942,7 @@ function doKtv(tier){
   logT("lKtv"); render();
 }
 function doBuy(i){
-  var g=GOODS[i]; if(!spendCash(g.price)){ render(); return; }
+  var g=GOODS[i]; if(!spendCash(g.price,"shop")){ render(); return; }
   if(g.once) S.items.push(g.name.zh); else S.gifts+=1;
   S.mood=clamp(S.mood+6); sayT("sBuy", L(g.name), L(g.tag)); logT("lBuy", L(g.name)); advance(1); render();
 }
@@ -885,12 +950,12 @@ function visitBiz(){ S.mood=clamp(S.mood+5); advance(1); sayT("sBiz"); render();
 function doWalk(){
   advance(1); S.mood=clamp(S.mood+5);
   var r=Math.random();
-  if(r<0.25){ S.cash+=500; sayT("sWalk1"); }
+  if(r<0.25){ S.cash+=500; inc(500); sayT("sWalk1"); }
   else if(r<0.5){ var n=NPCS[Math.floor(Math.random()*NPCS.length)]; S.friends[n.id]=clamp((S.friends[n.id]||0)+3); sayT("sWalk2", n.name); }
   else sayT("sWalk3");
   render();
 }
-function doMarket(){ if(!spendCash(1000)){ render(); return; } S.mood=clamp(S.mood+9); advance(1); sayT("sMarket"); render(); }
+function doMarket(){ if(!spendCash(1000,"shop")){ render(); return; } S.mood=clamp(S.mood+9); advance(1); sayT("sMarket"); render(); }
 function visitCustom(i){ var c=S.customShops[i]; S.mood=clamp(S.mood+6); S.social=clamp(S.social+3); advance(1); sayT("sCustom", c.name, c.desc); render(); }
 function doChat(id){
   var n=npcById(id);
@@ -910,7 +975,7 @@ function doRepay(){
   logT("lRepay", fmtN(amt)); render();
 }
 /* ---------- modals ---------- */
-function openModal(k){ $("modal-"+k).classList.add("show"); if(k==="topup") renderPacks(); if(k==="custom") renderCustomList(); }
+function openModal(k){ $("modal-"+k).classList.add("show"); if(k==="topup") renderPacks(); if(k==="custom") renderCustomList(); if(k==="budget" && typeof fillBudget==="function") fillBudget(); if(k==="report" && typeof renderReport==="function") renderReport(); }
 function closeModal(k){ $("modal-"+k).classList.remove("show"); }
 function renderPacks(){
   var w=$("packs"); w.innerHTML="";
@@ -973,6 +1038,84 @@ $("btnReset").onclick=function(){
 };
 if(!S.started){ $("modal-start").classList.add("show"); }
 render();
+</script>
+<script>
+"use strict";
+var pendingReport=false;
+var BCATS=["food","transport","fun","shop"];
+var ALLCATS=["rent","food","transport","fun","shop","stay"];
+function money(v){ return (v<0?"-$":"$")+fmtN(Math.abs(v)); }
+function exp(cat, amt){ if(S.mExp && S.mExp[cat]!==undefined) S.mExp[cat]+=amt; }
+function inc(amt){ S.mInc=(S.mInc||0)+amt; }
+function freshExp(){ return {rent:0,food:0,transport:0,fun:0,shop:0,stay:0}; }
+function closeMonth(){
+  var tot=0; ALLCATS.forEach(function(c){ tot+=(S.mExp[c]||0); });
+  var net=S.mInc-tot;
+  var rate=S.mInc>0 ? net/S.mInc : (net>=0?1:-1);
+  var g= rate>=0.3 ? "S" : rate>=0.15 ? "A" : rate>=0 ? "B" : rate>=-0.2 ? "C" : "D";
+  S.lastReport={m:S.month, inc:S.mInc, exp:Object.assign({}, S.mExp), tot:tot, net:net,
+    rate:Math.round(rate*100), grade:g, budgets:Object.assign({}, S.budgets)};
+  logT("lMonth", S.month, (net>=0?"+$":"-$")+fmtN(Math.abs(net)));
+  S.month+=1; S.mInc=0; S.mExp=freshExp();
+  pendingReport=true;
+}
+function maybeReport(){ if(pendingReport){ pendingReport=false; openModal("report"); } }
+function barRow(label, val, max, color, rightText){
+  var pct=max>0 ? Math.min(100, Math.round(val/max*100)) : 0;
+  return "<div style='margin-bottom:7px'><div style='display:flex; justify-content:space-between; font-size:13.5px'><span>"+label+"</span><b>"+rightText+"</b></div>"
+    +"<div class='bar'><div style='width:"+pct+"%; background:"+color+"'></div></div></div>";
+}
+function renderBudgetPanel(){
+  var w=$("budgetPanel"); if(!w) return;
+  $("hBudget").textContent=t("hBudget")+" · "+fmt("monthW", S.month);
+  var h="";
+  BCATS.forEach(function(c){
+    var spent=S.mExp[c]||0, cap=S.budgets[c]||0, over=cap>0 && spent>cap;
+    h+=barRow(t("cat"+c.charAt(0).toUpperCase()+c.slice(1)), spent, Math.max(cap, spent, 1),
+      over ? "#ef476f" : "#06d6a0", money(spent)+" / "+money(cap)+(over ? " · "+t("budOver") : ""));
+  });
+  var gp=S.goal>0 ? Math.min(100, Math.round(S.cash/S.goal*100)) : 100;
+  h+="<div style='margin-top:9px'>"+barRow(t("goalW"), S.cash, Math.max(S.goal, S.cash, 1), "#ffb703", money(S.cash)+" / "+money(S.goal))+"</div>";
+  w.innerHTML=h;
+}
+function fillBudget(){
+  $("bFood").value=S.budgets.food; $("bTransport").value=S.budgets.transport;
+  $("bFun").value=S.budgets.fun; $("bShop").value=S.budgets.shop; $("bGoal").value=S.goal;
+  var tot=0; ALLCATS.forEach(function(c){ tot+=(S.mExp[c]||0); });
+  var lines=fmt("monthW", S.month)+" · "+t("rpIncome")+" <b>"+money(S.mInc)+"</b> · "+t("rpExpense")+" <b>"+money(tot)+"</b><br>";
+  ALLCATS.forEach(function(c){ if((S.mExp[c]||0)>0) lines+=t("cat"+c.charAt(0).toUpperCase()+c.slice(1))+": "+money(S.mExp[c])+"　"; });
+  $("bSummary").innerHTML=lines;
+  $("bMsg").textContent="";
+}
+function saveBudget(){
+  function num(id, old){ var v=parseInt($(id).value,10); return isNaN(v)||v<0 ? old : v; }
+  S.budgets.food=num("bFood", S.budgets.food);
+  S.budgets.transport=num("bTransport", S.budgets.transport);
+  S.budgets.fun=num("bFun", S.budgets.fun);
+  S.budgets.shop=num("bShop", S.budgets.shop);
+  S.goal=num("bGoal", S.goal);
+  $("bMsg").textContent=t("bSaved");
+  render();
+}
+function renderReport(){
+  var r=S.lastReport, w=$("rBody"); if(!w) return;
+  if(!r){ w.innerHTML="—"; return; }
+  var h="<p style='font-size:16px'><b>"+fmt("monthW", r.m)+"</b> · "+t("rpGrade")+": <b style='font-size:22px'>"+r.grade+"</b><br>"
+    +"<span style='font-size:13.5px; opacity:.8'>"+t("g"+r.grade)+"</span></p>";
+  h+="<div class='item'><span>"+t("rpIncome")+"</span><b>"+money(r.inc)+"</b></div>";
+  h+="<div class='item'><span>"+t("rpExpense")+"</span><b>"+money(r.tot)+"</b></div>";
+  h+="<div class='item'><span>"+t("rpNet")+"</span><b>"+money(r.net)+"</b></div>";
+  h+="<div class='item'><span>"+t("rpRate")+"</span><b>"+r.rate+"%</b></div>";
+  h+="<h4 style='margin:12px 0 6px'>"+t("rpCats")+"</h4>";
+  ALLCATS.forEach(function(c){
+    var v=r.exp[c]||0; if(v<=0) return;
+    h+=barRow(t("cat"+c.charAt(0).toUpperCase()+c.slice(1)), v, Math.max(r.tot,1), "#118ab2", money(v)+" ("+Math.round(v/Math.max(r.tot,1)*100)+"%)");
+  });
+  var overs=[];
+  BCATS.forEach(function(c){ var cap=r.budgets[c]||0; if(cap>0 && (r.exp[c]||0)>cap) overs.push(t("cat"+c.charAt(0).toUpperCase()+c.slice(1))+" "+money(r.exp[c])+" / "+money(cap)); });
+  h+="<h4 style='margin:12px 0 6px'>"+t("rpOverT")+"</h4><p style='margin:0'>"+(overs.length? overs.join("<br>") : t("rpNone"))+"</p>";
+  w.innerHTML=h;
+}
 </script>
 </body>
 </html>
