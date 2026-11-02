@@ -11,6 +11,8 @@ function cuTypeChanged(){
   else if(ty==="goods"){ n1.style.display=""; $("cuNum1Lb").textContent=t("cuPriceLb"); }
   else if(ty==="place"){ n1.style.display=""; fx.style.display=""; em.style.display=""; $("cuNum1Lb").textContent=t("cuCostLb"); }
   else if(ty==="transport"){ n1.style.display=""; $("cuNum1Lb").textContent=t("cuFareLb"); }
+  else if(ty==="office"){ n1.style.display=""; $("cuNum1Lb").textContent=t("cuPayLb"); }
+  else if(ty==="club"||ty==="hotel"||ty==="ktv"){ n1.style.display=""; $("cuNum1Lb").textContent=t("cuPriceLb"); }
 }
 function cuNum(id, dft){ var v=parseInt($(id).value,10); return isNaN(v)||v<0 ? dft : v; }
 function submitCustom(){
@@ -25,6 +27,12 @@ function submitCustom(){
   else if(ty==="goods"){ S.custom.goods.push({price:cuNum("cNum1",30), once:true, name:L3(nm,nm,nm), tag:L3(d||nm,d||nm,d||nm)}); msgKey="cuOkShop"; }
   else if(ty==="place"){ S.custom.places.push({name:nm, desc:d||nm, cost:cuNum("cNum1",10), fx:$("cFx").value, emoji:$("cEmoji").value}); msgKey="cuOkShop"; }
   else if(ty==="transport"){ S.custom.transports.push({name:nm, fare:cuNum("cNum1",3)}); msgKey="cuOkShop"; }
+  else if(ty==="office"||ty==="club"||ty==="hotel"||ty==="ktv"){
+    if(!S.custom.venues) S.custom.venues={office:[],club:[],hotel:[],ktv:[]};
+    if(!S.custom.venues[ty]) S.custom.venues[ty]=[];
+    var defs={office:100,club:30,hotel:100,ktv:25};
+    S.custom.venues[ty].push({name:nm, desc:d||nm, amount:cuNum("cNum1",defs[ty])}); msgKey="cuOkShop";
+  }
   $("cMsg").textContent=t(msgKey);
   $("cName").value=""; $("cDesc").value="";
   logT("lCustom", nm); renderCustomList(); render();
@@ -40,7 +48,32 @@ function renderCustomList(){
   S.custom.goods.forEach(function(c){ h+="<div class='item'><span>🧺 "+c.name.zh+"</span><small>"+money(c.price)+"</small></div>"; });
   S.custom.places.forEach(function(c){ h+="<div class='item'><span>"+c.emoji+" "+c.name+"</span><small>"+c.desc+"</small></div>"; });
   S.custom.transports.forEach(function(c){ h+="<div class='item'><span>🚌 "+c.name+"</span><small>"+money(c.fare)+"</small></div>"; });
+  if(S.custom.venues){
+    (S.custom.venues.office||[]).forEach(function(c){ h+="<div class='item'><span>🏢 "+c.name+"</span><small>"+money(c.amount)+"</small></div>"; });
+    (S.custom.venues.club||[]).forEach(function(c){ h+="<div class='item'><span>🌃 "+c.name+"</span><small>"+money(c.amount)+"</small></div>"; });
+    (S.custom.venues.hotel||[]).forEach(function(c){ h+="<div class='item'><span>🏨 "+c.name+"</span><small>"+money(c.amount)+"</small></div>"; });
+    (S.custom.venues.ktv||[]).forEach(function(c){ h+="<div class='item'><span>🎤 "+c.name+"</span><small>"+money(c.amount)+"</small></div>"; });
+  }
   w.innerHTML=h ? "<h4 style='margin:12px 0 6px'>"+t("addedH")+"</h4>"+h : "";
+}
+function doVenueShift(i){
+  var v=S.custom.venues && S.custom.venues.office[i]; if(!v) return;
+  if(S.energy<22){ sayT("sTired"); render(); return; }
+  S.cash+=v.amount; inc(v.amount,"salary"); S.xp+=10;
+  S.energy=clamp(S.energy-22); S.hunger=clamp(S.hunger-6); advance(4);
+  sayT("sWork", money(v.amount)); logT("lWork", money(v.amount)); render();
+}
+function doVenueFun(kind,i){
+  var v=S.custom.venues && S.custom.venues[kind][i]; if(!v) return;
+  if(!spendCash(v.amount,"fun")){ render(); return; }
+  S.mood=clamp(S.mood+18); S.social=clamp(S.social+12); advance(2);
+  sayT("sVenueFun", v.name); render();
+}
+function doVenueStay(i){
+  var v=S.custom.venues && S.custom.venues.hotel[i]; if(!v) return;
+  if(!spendCash(v.amount,"stay")){ render(); return; }
+  S.mood=clamp(S.mood+12); S.hygiene=100; S.energy=100; S.hour=8;
+  sayT("sVenueStay", v.name); newDay(); render(); maybeReport();
 }
 function visitPlace(i){
   var p=S.custom.places[i]; if(!p) return;

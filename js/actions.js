@@ -21,14 +21,14 @@ function applyJob(i){
   if(S.jobXp[key]===undefined) S.jobXp[key]=0;
   if(S.hiredBonus.indexOf(key)<0){
     S.hiredBonus.push(key);
-    var bonus=jobPay(); S.cash+=bonus; inc(bonus);
+    var bonus=jobPay(); S.cash+=bonus; inc(bonus,"salary");
     sayT("sHiredBonus", L(j.title), money(bonus));
   } else sayT("sHired", L(j.title));
   logT("lHired", L(j.title)); render();
 }
 function doWork(){
   if(S.energy<22){ sayT("sTired"); render(); return; }
-  var pay=jobPay(); S.cash+=pay; inc(pay); S.xp+=10; if(!S.jobXp) S.jobXp={}; S.jobXp[S.job]=(S.jobXp[S.job]||0)+10; S.energy=clamp(S.energy-22); S.hunger=clamp(S.hunger-6);
+  var pay=jobPay(); S.cash+=pay; inc(pay,"salary"); S.xp+=10; if(!S.jobXp) S.jobXp={}; S.jobXp[S.job]=(S.jobXp[S.job]||0)+10; S.energy=clamp(S.energy-22); S.hunger=clamp(S.hunger-6);
   advance(4); logT("lWork", money(pay));
   var jt=jobTitleObj();
   if(jt && (S.jobXp[S.job]||0)>=S.jobLevel*40 && S.jobLevel<5){ S.jobLevel+=1; if(!S.jobLevels) S.jobLevels={}; S.jobLevels[S.job]=S.jobLevel; sayT("sPromoted", L(jt.title), S.jobLevel, money(jobPay())); logT("lPromote", L(jt.title), S.jobLevel); }
@@ -57,7 +57,7 @@ function doKtv(tier){
   else{
     if(!spendCash(45,"fun")){ render(); return; }
     S.mood=clamp(S.mood+24); S.social=clamp(S.social+14); advance(3);
-    if(Math.random()<0.35){ S.cash+=10; inc(10); sayT("sKtv1Tip", money(10)); } else sayT("sKtv1");
+    if(Math.random()<0.35){ S.cash+=10; inc(10,"extra"); sayT("sKtv1Tip", money(10)); } else sayT("sKtv1");
   }
   logT("lKtv"); render();
 }
@@ -70,7 +70,7 @@ function visitBiz(){ S.mood=clamp(S.mood+5); advance(1); sayT("sBiz"); render();
 function doWalk(){
   advance(1); S.mood=clamp(S.mood+5);
   var r=Math.random();
-  if(r<0.25){ S.cash+=5; inc(5); sayT("sWalk1", money(5)); }
+  if(r<0.25){ S.cash+=5; inc(5,"extra"); sayT("sWalk1", money(5)); }
   else if(r<0.5){ var n=NPCS[Math.floor(Math.random()*NPCS.length)]; S.friends[n.id]=clamp((S.friends[n.id]||0)+3); sayT("sWalk2", n.name); }
   else sayT("sWalk3");
   render();

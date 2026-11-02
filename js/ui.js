@@ -38,7 +38,7 @@ function applyStatic(){
   $("siLinkLb").textContent=t("siLinkLb"); $("siPayNote").textContent=t("payVirtual"); $("siGo").textContent=fmt("siGo", money(SINGER_COST));
   $("cuTitle").textContent=t("cuTitle"); $("cuNote").textContent=t("cuNote");
   $("cuTypeLb").textContent=t("cuTypeLb");
-  var ctOpts=["cuTypeShop","cuTypeNpc","cuTypeHome","cuTypeJob","cuTypeFood","cuTypeGoods","cuTypePlace","cuTypeTransport"];
+  var ctOpts=["cuTypeShop","cuTypeNpc","cuTypeHome","cuTypeJob","cuTypeFood","cuTypeGoods","cuTypePlace","cuTypeTransport","cuTypeOffice","cuTypeClub","cuTypeHotel","cuTypeKtv"];
   for(var ci=0; ci<ctOpts.length && ci<$("cType").options.length; ci++) $("cType").options[ci].textContent=t(ctOpts[ci]);
   $("cuNum1Lb").textContent=t("cuPriceLb"); $("cuNum2Lb").textContent=t("cuHungerLb");
   $("cuFxLb").textContent=t("cuFxLb"); $("cuEmojiLb").textContent=t("cuEmojiLb");
@@ -74,7 +74,7 @@ function render(){
   LOCS.forEach(function(x){
     var b=document.createElement("button");
     b.className="loc"+(x.id===S.loc?" active":"");
-    b.innerHTML=x.icon+" "+L(x.name)+"<small>"+x.dist.toUpperCase()+"</small>";
+    b.innerHTML=x.icon+" "+L(x.name);
     b.onclick=function(){ go(x.id); };
     map.appendChild(b);
   });
@@ -143,6 +143,11 @@ function renderPanel(){
       h+= actBtn(t("noJobGo"), t("noJobGoS"), "go('jobs')");
     }
     h+="</div>";
+    if(S.custom.venues && S.custom.venues.office.length){
+      h+="<div class='row'>";
+      S.custom.venues.office.forEach(function(v,i){ h+=actBtn(v.name, fmt("aWorkS", money(v.amount)), "doVenueShift("+i+")"); });
+      h+="</div>";
+    }
   }
   if(S.loc==="club"){
     h="<h3>"+t("pClub")+"</h3>";
@@ -152,13 +157,21 @@ function renderPanel(){
       + actBtn(t("aClubChat"), fmt("aClubChatS", money(12)), "doClubChat()")
       + actBtn(t("aVip"), fmt("aVipS", money(60)), "doVip()")
       + "</div>";
+    if(S.custom.venues && S.custom.venues.club.length){
+      h+="<div class='row'>";
+      S.custom.venues.club.forEach(function(v,i){ h+=actBtn(v.name, money(v.amount), "doVenueFun('club',"+i+")"); });
+      h+="</div>";
+    }
   }
   if(S.loc==="hotel"){
     h="<h3>🏨</h3><div class='list'>"
       + "<div class='item'><span><b>"+t("hotelStd")+"</b><small>"+fmt("hotelStdS", money(80))+"</small></span><button class='mini' onclick='doHotel(0)'>"+t("checkin")+"</button></div>"
       + "<div class='item'><span><b>"+t("hotelLux")+"</b><small>"+fmt("hotelLuxS", money(150))+"</small></span><button class='mini pink' onclick='doHotel(1)'>"+t("checkin")+"</button></div>"
-      + "<div class='item'><span><b>"+t("hotelTea")+"</b><small>"+fmt("hotelTeaS", money(25))+"</small></span><button class='mini' onclick='doTea()'>"+t("order1")+"</button></div>"
-      + "</div>";
+      + "<div class='item'><span><b>"+t("hotelTea")+"</b><small>"+fmt("hotelTeaS", money(25))+"</small></span><button class='mini' onclick='doTea()'>"+t("order1")+"</button></div>";
+    if(S.custom.venues) S.custom.venues.hotel.forEach(function(v,i){
+      h+="<div class='item'><span><b>"+v.name+"</b><small>"+money(v.amount)+"</small></span><button class='mini' onclick='doVenueStay("+i+")'>"+t("checkin")+"</button></div>";
+    });
+    h+="</div>";
   }
   if(S.loc==="food"){
     h="<h3>"+t("pFood")+"</h3><div class='list'>";
@@ -172,6 +185,11 @@ function renderPanel(){
       + actBtn(t("aKtv0"), fmt("aKtv0S", money(15)), "doKtv(0)")
       + actBtn(t("aKtv1"), fmt("aKtv1S", money(45)), "doKtv(1)")
       + "</div>";
+    if(S.custom.venues && S.custom.venues.ktv.length){
+      h+="<div class='row'>";
+      S.custom.venues.ktv.forEach(function(v,i){ h+=actBtn(v.name, money(v.amount), "doVenueFun('ktv',"+i+")"); });
+      h+="</div>";
+    }
   }
   if(S.loc==="mall"){
     var recs=S.ads.filter(function(a){return a.place==="mall";});

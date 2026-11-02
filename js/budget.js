@@ -4,17 +4,19 @@ var pendingReport=false;
 var BCATS=["food","transport","fun","shop"];
 var ALLCATS=["rent","food","transport","fun","shop","stay","other"];
 function exp(cat, amt){ if(S.mExp && S.mExp[cat]!==undefined) S.mExp[cat]+=amt; }
-function inc(amt){ S.mInc=(S.mInc||0)+amt; }
+var INCCATS=["salary","side","extra"];
+function freshInc(){ return {salary:0,side:0,extra:0}; }
+function inc(amt, cat){ S.mInc=(S.mInc||0)+amt; if(cat){ if(!S.mIncCats) S.mIncCats=freshInc(); if(S.mIncCats[cat]!==undefined) S.mIncCats[cat]+=amt; } }
 function freshExp(){ return {rent:0,food:0,transport:0,fun:0,shop:0,stay:0,other:0}; }
 function closeMonth(ym){
   var tot=0; ALLCATS.forEach(function(c){ tot+=(S.mExp[c]||0); });
   var net=S.mInc-tot;
   var rate=S.mInc>0 ? net/S.mInc : (net>=0?1:-1);
   var g= rate>=0.3 ? "S" : rate>=0.15 ? "A" : rate>=0 ? "B" : rate>=-0.2 ? "C" : "D";
-  S.lastReport={ym:ym, inc:S.mInc, exp:Object.assign({}, S.mExp), tot:tot, net:net,
+  S.lastReport={ym:ym, inc:S.mInc, incCats:Object.assign({}, S.mIncCats||{}), exp:Object.assign({}, S.mExp), tot:tot, net:net,
     rate:Math.round(rate*100), grade:g, budgets:Object.assign({}, S.budgets)};
   logT("lMonth", money(net));
-  S.mInc=0; S.mExp=freshExp();
+  S.mInc=0; S.mIncCats=freshInc(); S.mExp=freshExp();
   pendingReport=true;
 }
 function maybeReport(){ if(pendingReport){ pendingReport=false; openModal("report"); } }
@@ -27,6 +29,9 @@ function renderBudgetPanel(){
   var w=$("budgetPanel"); if(!w) return;
   $("hBudget").textContent=t("hBudget")+" · "+intlYM(S.dateISO);
   var h="";
+  var incParts=[];
+  INCCATS.forEach(function(c){ var v=(S.mIncCats||{})[c]||0; if(v>0) incParts.push(t("cat"+c.charAt(0).toUpperCase()+c.slice(1))+" "+money(v)); });
+  h+="<div style='margin-bottom:9px; font-size:13.5px'>"+t("rpIncome")+": <b>"+money(S.mInc)+"</b>"+(incParts.length ? "<br><span style='opacity:.75'>"+incParts.join(" · ")+"</span>" : "")+"</div>";
   BCATS.forEach(function(c){
     var spent=S.mExp[c]||0, cap=S.budgets[c]||0, over=cap>0 && spent>cap;
     h+=barRow(t("cat"+c.charAt(0).toUpperCase()+c.slice(1)), spent, Math.max(cap, spent, 1),
@@ -44,6 +49,8 @@ function fillBudget(){
   var tot=0; ALLCATS.forEach(function(c){ tot+=(S.mExp[c]||0); });
   var lines=intlYM(S.dateISO)+" · "+t("rpIncome")+" <b>"+money(S.mInc)+"</b> · "+t("rpExpense")+" <b>"+money(tot)+"</b><br>";
   ALLCATS.forEach(function(c){ lines+=t("cat"+c.charAt(0).toUpperCase()+c.slice(1))+": "+money(S.mExp[c]||0)+"　"; });
+  lines+="<br>"+t("rpIncCats")+": ";
+  INCCATS.forEach(function(c){ lines+=t("cat"+c.charAt(0).toUpperCase()+c.slice(1))+": "+money((S.mIncCats||{})[c]||0)+"　"; });
   $("bSummary").innerHTML=lines;
   $("bMsg").textContent="";
 }
@@ -71,6 +78,11 @@ function renderReport(){
   ALLCATS.forEach(function(c){
     var v=r.exp[c]||0; if(v<=0) return;
     h+=barRow(t("cat"+c.charAt(0).toUpperCase()+c.slice(1)), v, Math.max(r.tot,1), "#118ab2", money(v)+" ("+Math.round(v/Math.max(r.tot,1)*100)+"%)");
+  });
+  h+="<h4 style='margin:12px 0 6px'>"+t("rpIncCats")+"</h4>";
+  INCCATS.forEach(function(c){
+    var v=(r.incCats||{})[c]||0; if(v<=0) return;
+    h+=barRow(t("cat"+c.charAt(0).toUpperCase()+c.slice(1)), v, Math.max(r.inc,1), "#06d6a0", money(v)+" ("+Math.round(v/Math.max(r.inc,1)*100)+"%)");
   });
   var overs=[];
   BCATS.forEach(function(c){ var cap=r.budgets[c]||0; if(cap>0 && (r.exp[c]||0)>cap) overs.push(t("cat"+c.charAt(0).toUpperCase()+c.slice(1))+" "+money(r.exp[c])+" / "+money(cap)); });

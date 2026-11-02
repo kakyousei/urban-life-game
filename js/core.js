@@ -6,14 +6,16 @@ function fmtN(n){ return n.toLocaleString("en-US"); }
 function fresh(){
   return {started:true, name:"小拉", day:1, hour:8, cash:0, debt:0, energy:85, mood:70, hunger:70, hygiene:80, social:40,
     job:null, jobLevel:1, xp:0, jobLevels:{}, jobXp:{}, hiredBonus:[], loc:"home", home:0, transMode:"bus", items:[], gifts:0, friends:{ada:10,tun:5,fun:0,eme:0,bol:15},
-    dateISO:todayISO(), daysPlayed:0, custom:{homes:[],jobs:[],foods:[],goods:[],places:[],transports:[]}, customShops:[], customNpcs:[], ads:[], songs:[], diary:[], month:1, mInc:0, mExp:{rent:0,food:0,transport:0,fun:0,shop:0,stay:0,other:0}, budgets:{food:600,transport:200,fun:400,shop:300}, goal:2000, lastReport:null};
+    dateISO:todayISO(), daysPlayed:0, custom:{homes:[],jobs:[],foods:[],goods:[],places:[],transports:[],venues:{office:[],club:[],hotel:[],ktv:[]}}, customShops:[], customNpcs:[], ads:[], songs:[], diary:[], month:1, mInc:0, mExp:{rent:0,food:0,transport:0,fun:0,shop:0,stay:0,other:0}, mIncCats:{salary:0,side:0,extra:0}, budgets:{food:600,transport:200,fun:400,shop:300}, goal:2000, lastReport:null};
 }
 var S;
 try{ S=JSON.parse(localStorage.getItem(KEY))||JSON.parse(localStorage.getItem("naira-life-save-v1"))||JSON.parse(localStorage.getItem("lagos-life-save-v1"))||null; }catch(e){ S=null; }
 if(!S || typeof S.cash!=="number"){ S=fresh(); } else { var f=fresh(); for(var k in f) if(S[k]===undefined) S[k]=f[k]; }
 if(!S.dateISO) S.dateISO=todayISO();
 if(S.daysPlayed===undefined || S.daysPlayed===null) S.daysPlayed=Math.max(0,(S.day||1)-1);
-if(!S.custom) S.custom={homes:[],jobs:[],foods:[],goods:[],places:[],transports:[]};
+if(!S.custom) S.custom={homes:[],jobs:[],foods:[],goods:[],places:[],transports:[],venues:{office:[],club:[],hotel:[],ktv:[]}};
+if(!S.custom.venues) S.custom.venues={office:[],club:[],hotel:[],ktv:[]};
+if(!S.mIncCats) S.mIncCats={salary:0,side:0,extra:0};
 if(!S.custom.transports) S.custom.transports=[];
 if(!S.transMode) S.transMode="bus";
 if(S.mExp && S.mExp.other===undefined) S.mExp.other=0;
@@ -74,7 +76,7 @@ function newDay(){
   if(r<0.22){
     if(hasItem("太阳能供电套装")||hasItem("小型发电机")){ sayT("sEvPowerGen"); }
     else { S.mood=clamp(S.mood-6); sayT("sEvPower"); }
-  } else if(r<0.34){ var gig=20+Math.floor(Math.random()*3)*5; S.cash+=gig; inc(gig); sayT("sEvGig", money(gig)); }
+  } else if(r<0.34){ var gig=20+Math.floor(Math.random()*3)*5; S.cash+=gig; inc(gig,"side"); sayT("sEvGig", money(gig)); }
   else if(r<0.42){ S.hunger=clamp(S.hunger+12); sayT("sEvTreat"); }
 }
 function spendCash(n, cat){ if(S.cash<n){ sayT("sNoCash"); return false; } S.cash-=n; if(cat) exp(cat, n); return true; }

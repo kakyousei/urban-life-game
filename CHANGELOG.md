@@ -3,6 +3,28 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] — 2026-11-03
+
+### Added — income categories
+- Income is now tracked by category, like spending: **salary** (shift pay and
+  signing bonuses), **gigs** (odd-job events) and **other income** (KTV tips,
+  found money). The budget panel shows this month's income with its breakdown,
+  and the budget summary and the monthly report gained an income-breakdown
+  section. Previously work income only existed as one lump total.
+
+### Added — build-my-city covers every facility
+- The editor gains four types so all **11 map facilities** have a matching
+  editor type: **Company** (appears at the Office — work a shift there for the
+  pay you set), **Nightclub**, **Hotel** (stay the night: restores you and
+  starts a new day, charged to stays) and **KTV** (charged to fun).
+
+### Removed — leftover district names
+- The map tiles no longer show district abbreviations (YABA, IKEJA, VI,
+  LEKKI, IKOYI, SURULERE) and facility titles, an NPC line and a few input
+  placeholders no longer mention Lagos neighbourhoods — leftovers from the
+  game's original framing that meant nothing in Urban Life. District grouping
+  still drives transport fares internally, under neutral codes.
+
 ## [1.1.3] — 2026-11-03
 
 ### Changed — hiring, redesigned
@@ -146,6 +168,7 @@ try to end each real calendar month in the black.
 - In-game money is fictional and cannot be cashed out.
 
 [1.1.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.3
+[1.2.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.0
 [1.1.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.2
 [1.1.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.1
 [1.1.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.0
