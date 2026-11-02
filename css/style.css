@@ -6,9 +6,10 @@
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   body{margin:0; font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; color:var(--ink);
     background:linear-gradient(160deg,var(--bg1),var(--bg2) 55%,var(--bg3)); min-height:100vh; padding:16px 12px 44px;}
+  html,body{overflow-x:hidden;}
   header{text-align:center; color:#fff; margin-bottom:8px;}
   header h1{margin:2px 0; font-size:clamp(24px,5vw,36px); letter-spacing:1px;}
-  header p{margin:0; opacity:.85; font-size:14px;}
+  header p{margin:0 auto; opacity:.85; font-size:14px; max-width:94vw; line-height:1.5;}
   .langbar{display:flex; gap:6px; justify-content:center; margin-top:8px;}
   .langbar button{border:2px solid rgba(255,255,255,.4); background:transparent; color:#fff; border-radius:999px;
     padding:4px 14px; cursor:pointer; font-size:13.5px; font-weight:700;}

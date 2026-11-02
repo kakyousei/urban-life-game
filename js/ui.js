@@ -20,11 +20,10 @@ function applyStatic(){
   $("footNote").innerHTML=t("foot"); var fxt=fxText(); if(fxt) $("footNote").innerHTML+=" · "+fxt;
   $("btnBudget").textContent=t("btnBudget");
   $("bTitle").textContent=t("bTitle"); $("bNote").textContent=t("bNote"); $("bCur").textContent=t("bCur");
-  $("bFoodLb").textContent=t("catFood"); $("bTransportLb").textContent=t("catTransport");
+  $("bCashLb").textContent=t("bCashLb"); $("bFoodLb").textContent=t("catFood"); $("bTransportLb").textContent=t("catTransport");
   $("bFunLb").textContent=t("catFun"); $("bShopLb").textContent=t("catShop");
   $("bGoalLb").textContent=t("bGoalLb"); $("bSave").textContent=t("bSave");
   $("rTitle").textContent=t("rpTitle");
-  $("stTitle").textContent=t("stTitle"); $("stNote").textContent=t("stNote");
   $("meTitle").textContent=t("meTitle"); $("meNote").textContent=t("meNote");
   $("meBizLb").textContent=t("meBizLb"); $("mBiz").placeholder=t("meBizPh");
   $("meCatLb").textContent=t("meCatLb"); $("mePlaceLb").textContent=t("mePlaceLb");
@@ -38,7 +37,7 @@ function applyStatic(){
   $("siLinkLb").textContent=t("siLinkLb"); $("siGo").textContent=fmt("siGo", money(SINGER_COST));
   $("cuTitle").textContent=t("cuTitle"); $("cuNote").textContent=t("cuNote");
   $("cuTypeLb").textContent=t("cuTypeLb");
-  var ctOpts=["cuTypeShop","cuTypeNpc","cuTypeHome","cuTypeJob","cuTypeFood","cuTypeGoods","cuTypePlace"];
+  var ctOpts=["cuTypeShop","cuTypeNpc","cuTypeHome","cuTypeJob","cuTypeFood","cuTypeGoods","cuTypePlace","cuTypeTransport"];
   for(var ci=0; ci<ctOpts.length && ci<$("cType").options.length; ci++) $("cType").options[ci].textContent=t(ctOpts[ci]);
   $("cuNum1Lb").textContent=t("cuPriceLb"); $("cuNum2Lb").textContent=t("cuHungerLb");
   $("cuFxLb").textContent=t("cuFxLb"); $("cuEmojiLb").textContent=t("cuEmojiLb");
@@ -47,24 +46,11 @@ function applyStatic(){
   $("cuNameLb").textContent=t("cuNameLb"); $("cName").placeholder=t("cuNamePh");
   $("cuDescLb").textContent=t("cuDescLb"); $("cDesc").placeholder=t("cuDescPh");
   $("cuGo").textContent=t("cuGo");
-  var bl=$("bgList"); bl.innerHTML="";
-  BGS.forEach(function(b,i){
-    var d=document.createElement("div"); d.className="bgcard";
-    d.innerHTML="<h4>"+L(b.name)+"</h4><p>"+L(b.desc)+"<br>💵 "+money(b.cash)+(b.debt?" · 💳 "+money(b.debt):"")+"</p>";
-    d.onclick=function(){ chooseBg(i); };
-    bl.appendChild(d);
-  });
   document.querySelectorAll("[data-lang]").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-lang")===LANG); });
-}
-function chooseBg(i){
-  var b=BGS[i];
-  S.cash=b.cash; S.home=b.home; S.debt=b.debt; S.started=true;
-  $("modal-start").classList.remove("show");
-  logT("lStart", L(b.name)); sayT("sStart"); render();
 }
 function render(){
   applyStatic();
-  $("vDate").textContent="📅 "+intlDate(S.dateISO)+" · "+(S.hour<10?"0":"")+S.hour+":00";
+  $("vDate").textContent=intlDate(S.dateISO)+" · "+(S.hour<10?"0":"")+S.hour+":00";
   $("vCash").textContent=money(S.cash);
   $("debtChip").style.display=S.debt>0?"":"none"; $("vDebt").textContent=money(S.debt);
   $("debtSec").style.display=S.debt>0?"":"none";
@@ -211,6 +197,15 @@ function renderPanel(){
       });
       h+="</div>";
     }
+  }
+  if(S.loc==="transport"){
+    h="<h3>🚌 "+L(loc().name)+"</h3><p style='font-size:13px;opacity:.75;margin:2px 0 8px'>"+t("transNote")+"</p><div class='list'>";
+    allTransModes().forEach(function(m){
+      var cur=S.transMode===m.id;
+      h+="<div class='item'><span><b>"+L(m.name)+"</b> · "+(m.fare>0?money(m.fare):t("freeW"))+"<small>"+L(m.desc)+"</small></span>"
+        + (cur ? "<b>"+t("curW")+"</b>" : "<button class='mini' onclick='setTransMode(\""+m.id+"\")'>"+t("useBtn")+"</button>") + "</div>";
+    });
+    h+="</div>";
   }
   if(S.loc && S.loc.indexOf("cp")===0){
     var pi=parseInt(S.loc.slice(2),10), pl2=S.custom.places[pi];

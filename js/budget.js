@@ -37,9 +37,10 @@ function renderBudgetPanel(){
   w.innerHTML=h;
 }
 function fillBudget(){
+  $("bCash").value=toDisplay(S.cash);
   $("bFood").value=toDisplay(S.budgets.food); $("bTransport").value=toDisplay(S.budgets.transport);
   $("bFun").value=toDisplay(S.budgets.fun); $("bShop").value=toDisplay(S.budgets.shop); $("bGoal").value=toDisplay(S.goal);
-  ["bFood","bTransport","bFun","bShop","bGoal"].forEach(function(id){ $(id).step=fxStep(); });
+  ["bCash","bFood","bTransport","bFun","bShop","bGoal"].forEach(function(id){ $(id).step=fxStep(); });
   var tot=0; ALLCATS.forEach(function(c){ tot+=(S.mExp[c]||0); });
   var lines=intlYM(S.dateISO)+" · "+t("rpIncome")+" <b>"+money(S.mInc)+"</b> · "+t("rpExpense")+" <b>"+money(tot)+"</b><br>";
   ALLCATS.forEach(function(c){ lines+=t("cat"+c.charAt(0).toUpperCase()+c.slice(1))+": "+money(S.mExp[c]||0)+"　"; });
@@ -48,6 +49,7 @@ function fillBudget(){
 }
 function saveBudget(){
   function num(id, old){ var v=parseInt($(id).value,10); return isNaN(v)||v<0 ? old : v; }
+  S.cash=toUSD(num("bCash", toDisplay(S.cash)));
   S.budgets.food=toUSD(num("bFood", toDisplay(S.budgets.food)));
   S.budgets.transport=toUSD(num("bTransport", toDisplay(S.budgets.transport)));
   S.budgets.fun=toUSD(num("bFun", toDisplay(S.budgets.fun)));

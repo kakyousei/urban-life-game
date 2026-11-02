@@ -12,6 +12,7 @@ var LOCS=[
   {id:"mall",  icon:"🛍️", dist:"ikeja",    emoji:"🛍️", name:L3("商场","モール","Mall"),               title:L3("Ikeja 商场","Ikeja のモール","Ikeja mall"),                      desc:L3("衣服、手机、香水和送给朋友的礼物。","服、スマホ、香水、友達へのギフト。","Clothes, phones, perfume and gifts for friends.")},
   {id:"street",icon:"🚶", dist:"any",      emoji:"🌇", name:L3("街道","街","Streets"),                title:L3("拉各斯的街道","ラゴスの街並み","The streets of Lagos"),           desc:L3("广告牌、夜市和偶遇，生活气息最浓的地方。","看板、夜市、偶然の出会い。生活の香りが一番濃い場所。","Billboards, night markets and chance meetings — everyday life at its richest.")},
   {id:"cafe",  icon:"☕", dist:"yaba",      emoji:"☕", name:L3("咖啡馆","カフェ","Café"),              title:L3("Yaba 咖啡馆","Yaba のカフェ","A café in Yaba"),                  desc:L3("朋友们常在这里碰头，聊天、八卦、谈梦想。","友達が集まる場所。おしゃべり、噂話、夢の話。","Where friends meet — chat, gossip and big dreams.")}
+  ,{id:"transport", icon:"🚌", dist:"any", emoji:"🚌", name:L3("交通","交通","Transport"), title:L3("城市交通","街の交通","Getting around"), desc:L3("选一种你习惯的出行方式，跨区移动就按它收费。自己的方式可以在「打造我的城市」里添加。","移動方法を選ぼう。エリア移動はその料金で計算します。自分の方法は「自分の街を作る」から追加できます。","Pick how you get around — trips between districts are charged by your mode. Add your own in Build my city.")}
 ];
 var JOBS=[
   {pay:90,  xp:0,  title:L3("外卖骑手","デリバリーライダー","Delivery rider"),      desc:L3("跑遍大街小巷，先赚到第一桶金。","街を走り回って、まず最初の収入を。","Ride all over the city and earn your first income.")},
@@ -46,12 +47,15 @@ var HOMES=[
   {rent:450,  name:L3("豪华公寓","高級アパート","Luxury apartment")},
   {rent:1200, name:L3("海景别墅","海の見える邸宅","Ocean-view house")}
 ];
-var BGS=[
-  {cash:5000, home:2, debt:0,     name:L3("含着金钥匙","恵まれたスタート","Silver spoon"),       desc:L3("家里有钱有资源，住豪华公寓，起步轻松——但别把好牌打烂。","お金も人脈もあるスタート。高級アパート住まい。油断すると転落も早い。","Money and connections from day one, in a luxury flat. A good hand — don't waste it.")},
-  {cash:1200, home:1, debt:0,     name:L3("普通打工族","普通の会社員","Working class"),          desc:L3("一份普通积蓄、一间小公寓，靠自己一步步往上走。","普通の貯金と小さな部屋。自分の力で少しずつ上へ。","Modest savings and a small flat — climb step by step on your own.")},
-  {cash:150, home:0, debt:800, name:L3("负债逆袭局","借金からの逆転劇","Hustler in debt"),    desc:L3("住合租单间，还欠着 $800。压力大，但故事通常都是这么开始的。","シェアハウス住まいで $800 の借金。プレッシャーは大きいが、物語はこう始まる。","A shared room and $800 of debt. Heavy pressure — but that's how good stories start.")}
-];
+
 var CATS=[L3("餐饮","飲食","Food & drink"), L3("服饰","ファッション","Fashion"), L3("美容","美容","Beauty"), L3("电子产品","電化製品","Electronics"), L3("其他","その他","Other")];
 var ADS_COST={street:100, mall:150, club:200};
 var SINGER_COST=120;
 
+
+var TRANS=[
+  {id:"walk", fare:0,  name:L3("步行","徒歩","Walk"),   desc:L3("免费，就是慢，还费体力","無料。その代わり遅くて疲れる","Free — but slow and tiring")},
+  {id:"bus", fare:3,  name:L3("公交车","バス","Bus"),   desc:L3("便宜，可能堵车","安い。渋滞するかも","Cheap, but traffic happens")},
+  {id:"metro", fare:5,  name:L3("地铁","地下鉄","Metro"), desc:L3("准时，不堵车","定時運行、渋滞なし","On time, no traffic")},
+  {id:"taxi", fare:15, name:L3("出租车","タクシー","Taxi"), desc:L3("快又舒服，心情也好","速くて快適、気分も上々","Fast and comfy, mood bonus")}
+];

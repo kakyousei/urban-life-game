@@ -4,16 +4,19 @@ function clamp(v){ return Math.max(0, Math.min(100, Math.round(v))); }
 function fmtN(n){ return n.toLocaleString("en-US"); }
 
 function fresh(){
-  return {started:false, name:"小拉", day:1, hour:8, cash:0, debt:0, energy:85, mood:70, hunger:70, hygiene:80, social:40,
-    job:null, jobLevel:1, xp:0, loc:"home", home:1, items:[], gifts:0, friends:{ada:10,tun:5,fun:0,eme:0,bol:15},
-    dateISO:todayISO(), daysPlayed:0, custom:{homes:[],jobs:[],foods:[],goods:[],places:[]}, customShops:[], customNpcs:[], ads:[], songs:[], diary:[], month:1, mInc:0, mExp:{rent:0,food:0,transport:0,fun:0,shop:0,stay:0}, budgets:{food:600,transport:200,fun:400,shop:300}, goal:2000, lastReport:null};
+  return {started:true, name:"小拉", day:1, hour:8, cash:0, debt:0, energy:85, mood:70, hunger:70, hygiene:80, social:40,
+    job:null, jobLevel:1, xp:0, loc:"home", home:0, transMode:"bus", items:[], gifts:0, friends:{ada:10,tun:5,fun:0,eme:0,bol:15},
+    dateISO:todayISO(), daysPlayed:0, custom:{homes:[],jobs:[],foods:[],goods:[],places:[],transports:[]}, customShops:[], customNpcs:[], ads:[], songs:[], diary:[], month:1, mInc:0, mExp:{rent:0,food:0,transport:0,fun:0,shop:0,stay:0}, budgets:{food:600,transport:200,fun:400,shop:300}, goal:2000, lastReport:null};
 }
 var S;
 try{ S=JSON.parse(localStorage.getItem(KEY))||JSON.parse(localStorage.getItem("naira-life-save-v1"))||JSON.parse(localStorage.getItem("lagos-life-save-v1"))||null; }catch(e){ S=null; }
 if(!S || typeof S.cash!=="number"){ S=fresh(); } else { var f=fresh(); for(var k in f) if(S[k]===undefined) S[k]=f[k]; }
 if(!S.dateISO) S.dateISO=todayISO();
 if(S.daysPlayed===undefined || S.daysPlayed===null) S.daysPlayed=Math.max(0,(S.day||1)-1);
-if(!S.custom) S.custom={homes:[],jobs:[],foods:[],goods:[],places:[]};
+if(!S.custom) S.custom={homes:[],jobs:[],foods:[],goods:[],places:[],transports:[]};
+if(!S.custom.transports) S.custom.transports=[];
+if(!S.transMode) S.transMode="bus";
+S.started=true;
 var selPack=1, lastSay={k:"sStart", a:[]};
 
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
@@ -73,9 +76,13 @@ function spendCash(n, cat){ if(S.cash<n){ sayT("sNoCash"); return false; } S.cas
 function go(id){
   var from=loc(), to=locById(id);
   if(to && from.id!==to.id && from.dist!=="any" && to.dist!=="any" && from.dist!==to.dist){
-    if(S.cash>=3){ S.cash-=3; exp("transport",3); sayT("sFare", money(3)); }
+    var tm=transModeObj();
+    if(tm.fare>0 && S.cash>=tm.fare){
+      S.cash-=tm.fare; exp("transport", tm.fare); sayT("sFare", money(tm.fare));
+      if(tm.id==="taxi"){ S.mood=clamp(S.mood+2); }
+      if(tm.id==="bus" || tm.custom){ if(Math.random()<0.18){ advance(1); S.mood=clamp(S.mood-5); sayT("sTraffic"); } }
+    }
     else { advance(1); S.energy=clamp(S.energy-6); sayT("sWalkFar"); }
-    if(Math.random()<0.18){ advance(1); S.mood=clamp(S.mood-5); sayT("sTraffic"); }
   }
   S.loc=id; render(); window.scrollTo({top:0, behavior:"smooth"});
 }
@@ -92,3 +99,18 @@ function isoAdd(iso, days){ var d=isoToDate(iso); d.setDate(d.getDate()+days); r
 function intlDate(iso){ try{ return new Intl.DateTimeFormat(localeTag(), {year:"numeric", month:"short", day:"numeric", weekday:"short"}).format(isoToDate(iso)); }catch(e){ return iso; } }
 function intlYM(iso){ try{ var v=(String(iso).length===7) ? iso+"-02" : iso; return new Intl.DateTimeFormat(localeTag(), {year:"numeric", month:"long"}).format(isoToDate(v)); }catch(e){ return iso; } }
 function intlShort(iso){ try{ return new Intl.DateTimeFormat(localeTag(), {month:"short", day:"numeric"}).format(isoToDate(iso)); }catch(e){ return iso; } }
+
+function transModeObj(){
+  if(S.transMode && S.transMode.indexOf("ct")===0){
+    var cm=S.custom.transports[parseInt(S.transMode.slice(2),10)];
+    if(cm) return {id:S.transMode, fare:cm.fare, custom:true, name:{zh:cm.name, ja:cm.name, en:cm.name}};
+  }
+  for(var i=0;i<TRANS.length;i++) if(TRANS[i].id===S.transMode) return TRANS[i];
+  return TRANS[1];
+}
+function setTransMode(id){ S.transMode=id; var m=transModeObj(); sayT("sTransSet", L(m.name)); render(); }
+function allTransModes(){
+  var list=TRANS.slice();
+  S.custom.transports.forEach(function(cm,i){ list.push({id:"ct"+i, fare:cm.fare, custom:true, name:{zh:cm.name, ja:cm.name, en:cm.name}, desc:{zh:"", ja:"", en:""}}); });
+  return list;
+}

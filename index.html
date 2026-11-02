@@ -12,7 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Jingcheng He (kakyousei)">
 <title>都市人生 · 边玩边算你的心情与每月预算 | Urban Life</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=110">
 </head>
 <body>
 
@@ -103,6 +103,7 @@
     <p class="note" id="bNote"></p>
     <h4 id="bCur" style="margin:10px 0 6px"></h4>
     <div id="bSummary" style="font-size:14px; line-height:1.9"></div>
+    <label id="bCashLb"></label><input id="bCash" type="number" min="0">
     <label id="bFoodLb"></label><input id="bFood" type="number" min="0" step="500">
     <label id="bTransportLb"></label><input id="bTransport" type="number" min="0" step="500">
     <label id="bFunLb"></label><input id="bFun" type="number" min="0" step="500">
@@ -118,19 +119,6 @@
     <button class="x" onclick="closeModal('report')">✕</button>
     <h3 id="rTitle"></h3>
     <div id="rBody" style="font-size:14.5px; line-height:1.8"></div>
-  </div>
-</div>
-
-<div class="overlay" id="modal-start">
-  <div class="modal">
-    <h3 id="stTitle"></h3>
-    <p class="note" id="stNote"></p>
-    <div class="langbar dark">
-      <button data-lang="zh" onclick="setLang('zh')">中文</button>
-      <button data-lang="ja" onclick="setLang('ja')">日本語</button>
-      <button data-lang="en" onclick="setLang('en')">English</button>
-    </div>
-    <div id="bgList"></div>
   </div>
 </div>
 
@@ -168,7 +156,7 @@
     <h3 id="cuTitle"></h3>
     <p class="note" id="cuNote"></p>
     <label id="cuTypeLb"></label>
-    <select id="cType"><option value="shop"></option><option value="npc"></option><option value="home"></option><option value="job"></option><option value="food"></option><option value="goods"></option><option value="place"></option></select>
+    <select id="cType"><option value="shop"></option><option value="npc"></option><option value="home"></option><option value="job"></option><option value="food"></option><option value="goods"></option><option value="place"></option><option value="transport"></option></select>
     <label id="cuNameLb"></label><input id="cName">
     <label id="cuDescLb"></label><input id="cDesc">
     <div id="cuNum1Wrap" style="display:none"><label id="cuNum1Lb"></label><input id="cNum1" type="number" min="0" step="1"></div>
@@ -182,14 +170,14 @@
 </div>
 
 <script src="js/i18n.js"></script>
-<script src="js/data.js"></script>
-<script src="js/fx.js"></script>
-<script src="js/core.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/actions.js"></script>
-<script src="js/budget.js"></script>
-<script src="js/portals.js"></script>
-<script src="js/custom.js"></script>
-<script src="js/app.js"></script>
+<script src="js/data.js?v=110"></script>
+<script src="js/fx.js?v=110"></script>
+<script src="js/core.js?v=110"></script>
+<script src="js/ui.js?v=110"></script>
+<script src="js/actions.js?v=110"></script>
+<script src="js/budget.js?v=110"></script>
+<script src="js/portals.js?v=110"></script>
+<script src="js/custom.js?v=110"></script>
+<script src="js/app.js?v=110"></script>
 </body>
 </html>

@@ -3,6 +3,24 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] — 2026-11-03
+
+### Changed
+- **No more background picker.** The game starts immediately with **0 cash**;
+  set your real starting balance any time in the budget dialog
+  （初期資金 / Starting money).
+- **Transport is its own facility**, right after the Café on the map. Pick how
+  you get around — walk (free), bus ($3), metro ($5), taxi ($15) — and trips
+  between districts are charged by your mode instead of one fixed fare.
+  Like every other facility, transport modes are **customisable**: add your
+  own (name + fare) in Build my city and select it.
+- Theme line refreshed on the start header and page title, with cache-busting
+  asset URLs so updates reach players immediately.
+
+### Fixed
+- The date chip showed two calendar icons; it now shows one.
+- The header tagline could overflow small screens; it now wraps.
+
 ## [1.0.1] — 2026-11-03
 
 ### Fixed
@@ -71,5 +89,6 @@ try to end each real calendar month in the black.
   pre-release versions migrate automatically.
 - In-game money is fictional and cannot be cashed out.
 
+[1.1.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.0
 [1.0.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.0.1
 [1.0.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.0.0
