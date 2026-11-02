@@ -3,6 +3,15 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.3.2] — 2026-11-03
+
+### Fixed — editor field label and confirmation text
+- The editor's amount label always reverted to "Price" after any re-render:
+  the static-label pass hard-coded it. It now follows the selected type
+  (Monthly rent for homes, Per-shift pay for jobs, Fare for transport…).
+- The "added" confirmation named the Streets for almost every type; it is
+  now place-neutral (the friend message still points to the Café).
+
 ## [1.3.1] — 2026-11-03
 
 ### Fixed — text cut off at the right edge on phones
@@ -224,6 +233,7 @@ try to end each real calendar month in the black.
 - In-game money is fictional and cannot be cashed out.
 
 [1.1.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.3
+[1.3.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.2
 [1.3.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.1
 [1.3.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.0
 [1.2.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.2

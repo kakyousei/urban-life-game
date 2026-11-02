@@ -40,7 +40,7 @@ function applyStatic(){
   $("cuTypeLb").textContent=t("cuTypeLb");
   var ctOpts=["cuTypeShop","cuTypeNpc","cuTypeHome","cuTypeJob","cuTypeFood","cuTypeGoods","cuTypePlace","cuTypeTransport","cuTypeOffice","cuTypeClub","cuTypeHotel","cuTypeKtv"];
   for(var ci=0; ci<ctOpts.length && ci<$("cType").options.length; ci++) $("cType").options[ci].textContent=t(ctOpts[ci]);
-  $("cuNum1Lb").textContent=t("cuPriceLb"); $("cuNum2Lb").textContent=t("cuHungerLb");
+  if(typeof cuTypeChanged==="function"){ try{ cuTypeChanged(); }catch(e){} } $("cuNum2Lb").textContent=t("cuHungerLb");
   $("cuFxLb").textContent=t("cuFxLb"); $("cuEmojiLb").textContent=t("cuEmojiLb");
   var fxSel=$("cFx"); fxSel.innerHTML="";
   [["relax","fxRelax"],["social","fxSocial"],["study","fxStudy"],["exercise","fxExercise"]].forEach(function(x){ var o=document.createElement("option"); o.value=x[0]; o.textContent=t(x[1]); fxSel.appendChild(o); });
