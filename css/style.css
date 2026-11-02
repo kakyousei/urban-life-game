@@ -100,3 +100,23 @@
   .bgcard h4{margin:0 0 4px; font-size:16.5px;}
   .bgcard p{margin:0; font-size:13.5px; opacity:.8; line-height:1.6;}
   footer{max-width:1020px; margin:16px auto 0; color:#cfe3ec; font-size:12.5px; text-align:center; opacity:.85; line-height:1.7;}
+
+  /* v1.3.1 mobile fit: nothing may force the layout wider than the screen.
+     Flex/grid children shrink, long unbroken text wraps, chips compact. */
+  .topbar{max-width:100%;}
+  .chip{min-width:0; max-width:100%;}
+  .row>*, .item>*, .friend>*, .bizrow>*, .gate>*{min-width:0;}
+  .item, .friend, .billboard, .songline, .pack, .bgcard p{overflow-wrap:break-word;}
+  .speech{max-width:100%; overflow-wrap:break-word;}
+  .diary{overflow-wrap:break-word;}
+  button.loc{min-width:0; overflow-wrap:anywhere;}
+  .friend .mini{flex:none;}
+  .heartbar{flex:none;}
+  input, select, textarea{max-width:100%;}
+  @media (max-width:560px){
+    .chip{font-size:13px; padding:5px 10px;}
+    .chip input{width:70px;}
+    .topbar{gap:6px;}
+    header p{font-size:13px;}
+    button.act{flex-basis:120px;}
+  }

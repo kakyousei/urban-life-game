@@ -3,6 +3,15 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.3.1] — 2026-11-03
+
+### Fixed — text cut off at the right edge on phones
+- A mobile-fit pass over the stylesheet: flex and grid children may now
+  shrink below their content size, long unbroken text (custom names, diary
+  lines, billboards, the speech bubble) wraps instead of stretching the
+  page, and the top chips (date / cash) get compact sizing on narrow
+  screens so the whole layout always fits the device width.
+
 ## [1.3.0] — 2026-11-03
 
 ### Changed — flat pay, monthly rent, currency-linked editor inputs
@@ -215,6 +224,7 @@ try to end each real calendar month in the black.
 - In-game money is fictional and cannot be cashed out.
 
 [1.1.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.3
+[1.3.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.1
 [1.3.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.3.0
 [1.2.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.2
 [1.2.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.1
