@@ -1,71 +1,57 @@
-# 🌆 拉各斯人生 · Lagos Life
+# 🌆 奈拉人生 · ナイラライフ · Naira Life
 
-一款 Lagos Life 风格的城市生活模拟游戏：在拉各斯找工作、赚钱、交朋友、泡夜店、住酒店、下馆子、唱 KTV、逛商场，把日子过成自己想要的样子。
+一款城市生活模拟游戏：在拉各斯找工作、赚钱、交朋友、泡夜店、住酒店、下馆子、唱 KTV、逛商场，把日子过成自己想要的样子。支持 **中文 / 日本語 / English** 三种语言切换。
 
-## 在线玩
+A city life-simulation game set in Lagos — work, earn, make friends, hit the clubs, book hotels, eat out, sing karaoke and shop, and live the life you want. Playable in **Chinese / Japanese / English**.
 
-**https://kakyousei.github.io/lagos-life-game/**
+ラゴスを舞台にした街暮らしシミュレーション。仕事、友達、クラブ、ホテル、食事、カラオケ、買い物――自分の生きたい人生を。**中文 / 日本語 / English** の3言語対応。
 
-无需安装、无需注册，进度保存在浏览器本地。
+## 在线玩 / Play / 遊ぶ
 
-## 玩法
+**https://kakyousei.github.io/naira-life-game/**
 
-- 🧭 **找工作**：职业中心有外卖骑手、店员、工程师、项目经理，经验越高收入越高
-- 🏢 **上班赚钱**：现金（₦）用来吃饭、租房式日常开销和消费
-- 🌃 **夜店**：跳舞、吧台社交、VIP 包间；歌手付费上架的歌会在这里「正在热播」
-- 🏨 **酒店**：标准间用现金，海景豪华套房用金币，含早餐
-- 🍽️ **餐厅**：Jollof Rice、Suya 烤串、海鲜大餐，拉各斯本地味道
-- 🎤 **KTV**：大厅欢唱或金币包间，唱得好还有机会收到打赏
-- 🛍️ **购物**：外套、手机、香水和送给朋友的礼物
-- ☕ **交朋友**：5 位本地朋友可聊天、送礼，好感度会慢慢涨
-- 🚶 **街道日常**：散步偶遇、夜市，还有商家投放的广告牌
+无需安装、无需注册，进度保存在浏览器本地。No install, no sign-up — progress saves in your browser.
+
+## 玩法 / How to play / 遊び方
+
+- 🎬 **三种开局**：含着金钥匙 / 普通打工族 / 负债逆袭局——起点不同，玩法不同
+- 🧭 **找工作与升职**：骑手、店员、工程师、项目经理；经验攒够自动升职加薪
+- 🏠 **住房与房租**：合租单间 → 一居室 → 豪华公寓 → 海景别墅；每周扣房租，付不起变欠款（带利息）
+- 💳 **欠款系统**：欠款会涨利息，可以在状态栏分期还清
+- 🧼 **五维状态**：精力、心情、饱腹、清洁、社交——脏兮兮去社交效果减半
+- 🚌 **交通**：跨区移动收交通费，也可能堵车；没钱就只能走路
+- ⚡ **生活事件**：停电（买发电机/太阳能可以免疫）、临时小活、朋友请客
+- 🌃 **夜生活与日常**：夜店、酒店、餐厅、KTV、商场、咖啡馆、街道夜市
+- ☕ **朋友系统**：聊天、送礼涨好感；本地食物 Jollof Rice、Suya 等
+
+**Three starts** (silver spoon / working class / hustler in debt), jobs with promotions, housing with weekly rent and interest-bearing debt, five needs (energy, mood, food, hygiene, social), transport fares and traffic, everyday events like power cuts — and clubs, hotels, restaurants, karaoke, malls and friends.
 
 ## ✏️ 打造我的城市（玩家共创）
 
-玩家可以把自己熟悉的生活放进游戏：
+把你熟悉的街道、常去的小店、生活里的朋友加进游戏：小店出现在「街道」，朋友出现在「咖啡馆」。Add your own shops and people — shops appear under Streets, friends at the Café.
 
-- 添加**小店 / 摊位**：出现在「街道」，可以去打卡（如自家楼下的烧烤摊、常去的夜市摊）
-- 添加**朋友 / 熟人**：出现在「咖啡馆」，可以聊天互动
+## 🪙 金币、商家与歌手
 
-内容保存在玩家自己的浏览器里，人人都能有自己版本的城市。
-
-## 🪙 金币与充值
-
-金币是高级货币：夜店 VIP、KTV 包间、豪华套房、商家广告、歌手上架都要用它。
-
-- 充值面板有 4 个金币包，并提供 **Stripe / Paystack** 两个支付入口
-- ⚠️ 当前公开版是**演示模式**：点击支付只模拟流程，**不会真实扣款**，金币按演示发放
-
-## 🏪 商家入駐与广告
-
-真实商家可以在游戏里变现曝光：
-
-- **街道广告牌**（20 金币 / 3 天）：出现在街道页顶部
-- **商场推荐位**（30 金币 / 3 天）：出现在商场商品列表前
-- **夜店赞助**（40 金币 / 3 天）：出现在夜店节目单
-
-广告到期自动下架，并记入日记。本地小店、餐厅、服饰店最适合这种「街坊式」投放。
-
-## 🎤 歌手入驻
-
-歌手付 25 金币，可把自己的歌放进夜店播放列表，标注「⭐ 正在热播」，持续 3 天（游戏内），可附音乐平台链接。
+- **充值**：4 个金币包，Stripe / Paystack 两个入口。⚠️ 公开版为**演示模式**，不会真实扣款
+- **商家入驻**：街道广告牌 / 商场推荐位 / 夜店赞助（20/30/40 金币 · 3 天）
+- **歌手入驻**：25 金币把自己的歌放进夜店播放列表「正在热播」（3 天）
 
 ## 💳 正式接真实支付（上线清单）
 
-GitHub Pages 是纯静态站点，**不能**安全地保存密钥或确认支付。正式收费前需要：
+GitHub Pages 是纯静态站点，不能安全保存密钥或确认支付。正式收费前需要：
 
-1. 注册 **Stripe** 和/或 **Paystack** 商户账号（尼日利亚本地收款优先 Paystack，国际卡可用 Stripe）
-2. 准备一个小后端（云函数即可）：
-   - 按金币包创建 Checkout / Payment Link
-   - 接收并验签 **Webhook**，只有收到支付成功事件后才给账号发放金币（绝不能只信前端跳转结果）
-3. 把游戏里的 `payDemo()` 换成跳转对应网关的收银台链接；商家广告费、歌手上架费同理
-4. 补齐：价格与税费说明、退款政策、广告审核规则（禁投品类）、歌手歌曲的版权声明（须为本人拥有权利的作品）
-5. 金币属于封闭虚拟货币：建议明确「不可提现、不可转让」，避免触碰支付与博彩监管红线
+1. 注册 **Stripe** 和/或 **Paystack** 商户账号（尼日利亚本地收款优先 Paystack）
+2. 一个小后端（云函数即可）：按金币包创建 Checkout / Payment Link；接收并验签 **Webhook**，支付成功后才发放金币
+3. 把 `payDemo()` 换成跳转收银台；商家广告费、歌手上架费同理
+4. 补齐价格与税费说明、退款政策、广告审核规则、歌手歌曲版权声明
+5. 游戏内货币为封闭虚拟货币：不可提现、不可转让
 
-## 技术
+Production payments need merchant accounts plus a small backend that verifies webhooks before crediting coins — see the checklist above (Chinese).
 
-单个 HTML 文件（原生 CSS + JavaScript），无构建步骤；游戏状态、玩家自建内容、广告与歌单都存放在浏览器 localStorage。正式版如需跨设备账号与真实余额，应迁移到带登录与数据库的后端。
+## 技术 / Tech
 
-## 许可
+单个 HTML 文件（原生 CSS + JavaScript），无构建步骤；状态、自建内容、广告与歌单存放在浏览器 localStorage。Single-file HTML, no build step; all state lives in localStorage.
+
+## 许可 / License
 
 MIT License — 欢迎 fork、学习和改编。
