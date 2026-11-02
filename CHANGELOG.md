@@ -3,6 +3,19 @@
 All notable changes to Urban Life （都市人生 / アーバンライフ） are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.2.2] — 2026-11-03
+
+### Fixed — editor type labels showed raw keys (cuTypeOffice…)
+- `index.html` loaded `js/i18n.js` **without** the `?v=` cache-buster every
+  other module carries, so browsers (notably iOS Safari) kept serving a
+  cached older dictionary after updates: new strings — the four new editor
+  type labels first — fell back to their raw key names while the rest of the
+  game updated around them. i18n.js now carries the same version parameter
+  as all other assets.
+- Verified the whole unification surface while at it: all 292 UI strings
+  exist in all three languages (0 missing), and every dynamically composed
+  key family (budget categories, editor types, place effects) resolves.
+
 ## [1.2.1] — 2026-11-03
 
 ### Fixed — the clock now follows your system time
@@ -184,6 +197,7 @@ try to end each real calendar month in the black.
 - In-game money is fictional and cannot be cashed out.
 
 [1.1.3]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.3
+[1.2.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.2
 [1.2.1]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.1
 [1.2.0]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.2.0
 [1.1.2]: https://github.com/kakyousei/urban-life-game/releases/tag/v1.1.2
