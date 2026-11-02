@@ -9,6 +9,9 @@ function money(v){
   var cf=curForLang(), r=FX[cf.c]||1, x=Math.round(v*r);
   return (x<0?"-":"")+cf.s+Math.abs(x).toLocaleString("en-US");
 }
+function toDisplay(usd){ var cf=curForLang(); return Math.round(usd*(FX[cf.c]||1)); }
+function toUSD(disp){ var cf=curForLang(); var r=FX[cf.c]||1; return Math.round(disp/r); }
+function fxStep(){ var cf=curForLang(); var r=FX[cf.c]||1; return r>=50 ? 500 : (r>=2 ? 50 : 10); }
 function fxText(){
   var cf=curForLang();
   if(cf.c==="USD") return "";

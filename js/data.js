@@ -2,7 +2,7 @@
 "use strict";
 function L3(zh,ja,en){ return {zh:zh, ja:ja, en:en}; }
 var LOCS=[
-  {id:"home",  icon:"🏠", dist:"yaba",     emoji:"🏠", name:L3("公寓","自宅","Home"),                 title:L3("Yaba 的小公寓","Yaba のアパート","A small flat in Yaba"),        desc:L3("你住的地方。城市再大，也要有个落脚处。","あなたの住まい。街が大きくても、帰る場所は必要。","Where you live. However big the city gets, you need a place to land.")},
+  {id:"home",  icon:"🏠", dist:"yaba",     emoji:"🏠", name:L3("住处","住まい","Home"),                 title:L3("Yaba 的住处","Yaba の住まい","A home in Yaba"),        desc:L3("你住的地方。城市再大，也要有个落脚处。","あなたの住まい。街が大きくても、帰る場所は必要。","Where you live. However big the city gets, you need a place to land.")},
   {id:"jobs",  icon:"🧭", dist:"ikeja",    emoji:"🧭", name:L3("职业中心","職業センター","Career centre"), title:L3("Ikeja 职业中心","Ikeja 職業センター","Ikeja career centre"),     desc:L3("招聘墙上贴满了机会，先从一份工作开始。","求人ボードはチャンスだらけ。まずは仕事から。","The job board is full of chances — start with a job.")},
   {id:"office",icon:"🏢", dist:"vi",       emoji:"🏢", name:L3("公司","会社","Office"),               title:L3("VI 的写字楼","VI のオフィスビル","Office tower in VI"),          desc:L3("玻璃幕墙、海景和会议室——上班族的战场。","ガラス張りのビルと会議室。会社員の戦場。","Glass walls, sea views and meeting rooms — the office battlefield.")},
   {id:"club",  icon:"🌃", dist:"lekki",    emoji:"🪩", name:L3("夜店","クラブ","Nightclub"),          title:L3("Lekki 夜店","Lekki のクラブ","Lekki nightclub"),                 desc:L3("霓虹、节拍和人群。夜晚才刚刚开始。","ネオンとビートと人混み。夜はこれから。","Neon, beats and crowds. The night is just starting.")},

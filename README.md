@@ -1,12 +1,12 @@
 # 🌆 都市人生 · アーバンライフ · Urban Life
 
-一款**生活成本预算模拟**游戏：在城市里找工作赚钱、付房租、吃喝玩乐，同时给每类开支设预算、看月末收支报告、努力把钱存下来。它回答一个很实际的问题：**拿这份工资，在这座城市到底能不能过好一个月？** 支持 **中文 / 日本語 / English** 三种语言切换。
+一款**边玩游戏边计算心情与每月预算**的生活模拟游戏：在城市里找工作赚钱、付房租、吃喝玩乐，一边盯着自己的心情值，一边给每类开支设预算、看月末收支报告。它回答一个很实际的问题：**拿这份工资、保持好心情，在这座城市到底能不能过好一个月？** 支持 **中文 / 日本語 / English** 三种语言切换。
 
 **v1.0.0 正式发布** · [更新日志](CHANGELOG.md) · [MIT 许可](LICENSE)
 
-A **cost-of-living budget simulation** set in a big city: earn a salary, pay rent, eat, go out — while setting budgets per category, reading a monthly income-and-spending report, and trying to save. It answers a practical question: **can this salary actually carry a good month in this city?** Playable in **Chinese / Japanese / English**.
+**Play while you track your mood and your monthly budget**: earn a salary in a big city, pay rent, eat, go out — watching your mood, setting budgets per category, and reading a monthly income-and-spending report. It answers a practical question: **can this salary — and a good mood — actually carry a good month in this city?** Playable in **Chinese / Japanese / English**.
 
-街暮らしの**生活費予算シミュレーション**。給料を稼ぎ、家賃を払い、食べて遊びながら、カテゴリごとに予算を決め、月末の収支レポートを見て貯金を目指します。**この給料で、この街で1か月やっていけるか？** を試せるゲームです。**中文 / 日本語 / English** の3言語対応。
+**遊びながら、気分と毎月の予算を計算する**生活シミュレーション。給料を稼ぎ、家賃を払い、食べて遊びながら、気分の値を見守り、カテゴリごとに予算を決め、月末の収支レポートを確認します。**この給料と良い気分で、この街で1か月やっていけるか？** を試せるゲームです。**中文 / 日本語 / English** の3言語対応。
 
 ## 原作者与原始出处 / Original Author & Repository / 原作者と原典
 

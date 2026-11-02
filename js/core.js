@@ -70,7 +70,6 @@ function newDay(){
   else if(r<0.42){ S.hunger=clamp(S.hunger+12); sayT("sEvTreat"); }
 }
 function spendCash(n, cat){ if(S.cash<n){ sayT("sNoCash"); return false; } S.cash-=n; if(cat) exp(cat, n); return true; }
-function spendCoins(n){ if(S.coins<n){ sayT("sNoCoins"); return false; } S.coins-=n; return true; }
 function go(id){
   var from=loc(), to=locById(id);
   if(to && from.id!==to.id && from.dist!=="any" && to.dist!=="any" && from.dist!==to.dist){
