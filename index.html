@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拉各斯人生 · Lagos Life</title>
+<style>
+  :root{
+    --gold:#ffb703; --teal:#06d6a0; --ink:#1d2733; --card:#ffffff;
+    --bg1:#0f2027; --bg2:#203a43; --bg3:#2c5364; --pink:#ef476f; --soft:#f4f7f9;
+    --shadow:0 10px 30px rgba(0,0,0,.25);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  body{margin:0; font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; color:var(--ink);
+    background:linear-gradient(160deg,var(--bg1),var(--bg2) 55%,var(--bg3)); min-height:100vh; padding:16px 12px 44px;}
+  header{text-align:center; color:#fff; margin-bottom:10px;}
+  header h1{margin:2px 0; font-size:clamp(24px,5vw,36px); letter-spacing:1px;}
+  header p{margin:0; opacity:.85; font-size:14px;}
+  .topbar{max-width:1020px; margin:10px auto; display:flex; gap:8px; flex-wrap:wrap; justify-content:center; align-items:center;}
+  .chip{background:#ffffff; border-radius:999px; padding:6px 14px; font-weight:700; font-size:14.5px; box-shadow:var(--shadow);}
+  .chip input{border:none; font:inherit; width:90px; text-align:center; background:transparent; outline:none;}
+  .btn{border:none; cursor:pointer; border-radius:999px; padding:8px 16px; font-weight:800; font-size:14.5px;
+    background:linear-gradient(180deg,#ffe98a,var(--gold)); color:#6b4700; box-shadow:0 3px 0 #c98f04;}
+  .btn:active{transform:translateY(2px); box-shadow:none;}
+  .btn.ghost{background:#fff; color:var(--ink); box-shadow:0 3px 0 #b9c6cc;}
+  .wrap{max-width:1020px; margin:0 auto; display:grid; grid-template-columns:1.2fr .8fr; gap:14px;}
+  @media (max-width:820px){ .wrap{grid-template-columns:1fr;} }
+  .card{background:var(--card); border-radius:20px; box-shadow:var(--shadow); padding:16px;}
+  .scene{border-radius:16px; padding:18px 14px; text-align:center; color:#fff; min-height:150px;
+    background:linear-gradient(180deg,#35586c,#22384a); position:relative; overflow:hidden;}
+  .scene .emoji{font-size:58px; display:block; margin-bottom:4px;}
+  .scene h2{margin:2px 0; font-size:22px;}
+  .scene p{margin:2px 0; opacity:.9; font-size:14px;}
+  .scene.night{background:linear-gradient(180deg,#1b1035,#3b1850);}
+  .speech{margin-top:10px; background:#fff; color:var(--ink); border-radius:999px; display:inline-block;
+    padding:7px 16px; font-size:14.5px; box-shadow:0 4px 10px rgba(0,0,0,.2); min-height:20px;}
+  .map{display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-top:14px;}
+  @media (max-width:560px){ .map{grid-template-columns:repeat(3,1fr);} }
+  button.loc{border:2px solid #e3ecef; background:var(--soft); border-radius:14px; padding:10px 4px; cursor:pointer;
+    font-size:14px; font-weight:700; color:var(--ink);}
+  button.loc small{display:block; font-weight:500; font-size:11.5px; opacity:.65; margin-top:2px;}
+  button.loc.active{border-color:var(--gold); background:#fff7e0;}
+  .panel{margin-top:14px;}
+  .panel h3{margin:0 0 8px; font-size:16.5px;}
+  .row{display:flex; gap:8px; flex-wrap:wrap;}
+  button.act{flex:1 1 150px; border:none; cursor:pointer; border-radius:14px; padding:11px 8px; font-size:14.5px; font-weight:700;
+    background:linear-gradient(180deg,#ffffff,#eef6f8); color:var(--ink); box-shadow:0 3px 0 #c3d3da; text-align:left;}
+  button.act small{display:block; font-weight:500; font-size:12px; opacity:.7; margin-top:2px;}
+  button.act:disabled{opacity:.45; cursor:not-allowed;}
+  button.act:active{transform:translateY(2px); box-shadow:none;}
+  .list{display:grid; gap:8px;}
+  .item{display:flex; justify-content:space-between; align-items:center; gap:8px; background:var(--soft);
+    border-radius:12px; padding:9px 12px; font-size:14px;}
+  .item b{font-size:14.5px;}
+  .item small{display:block; opacity:.7; font-weight:500;}
+  .mini{border:none; cursor:pointer; border-radius:999px; padding:6px 14px; font-weight:700; font-size:13px;
+    background:var(--teal); color:#04382b; white-space:nowrap;}
+  .mini:disabled{opacity:.45; cursor:not-allowed;}
+  .mini.pink{background:var(--pink); color:#fff;}
+  .stats{display:grid; gap:9px;}
+  .stat{display:grid; grid-template-columns:64px 1fr 32px; gap:8px; align-items:center; font-size:14px;}
+  .bar{height:13px; background:#e8eef1; border-radius:999px; overflow:hidden;}
+  .bar>div{height:100%; border-radius:999px; transition:width .4s;}
+  .f-energy{background:linear-gradient(90deg,#ffd93b,#ffb703);}
+  .f-mood{background:linear-gradient(90deg,#ff8fab,#ef476f);}
+  .f-social{background:linear-gradient(90deg,#6ee7ff,#118ab2);}
+  .f-hunger{background:linear-gradient(90deg,#ffb35c,#f4841f);}
+  .sec{margin-top:14px;}
+  .sec h3{margin:0 0 8px; font-size:16px;}
+  .friend{display:flex; justify-content:space-between; align-items:center; background:var(--soft); border-radius:12px; padding:8px 12px; font-size:14px; margin-bottom:6px;}
+  .heartbar{width:90px; height:9px; background:#e8eef1; border-radius:99px; overflow:hidden; display:inline-block; vertical-align:middle;}
+  .heartbar>div{height:100%; background:linear-gradient(90deg,#ff8fab,#ef476f);}
+  .diary{background:#fffaf0; border:1.5px dashed #e0c08a; border-radius:14px; padding:10px 14px; font-size:13.5px;
+    line-height:1.8; max-height:190px; overflow:auto;}
+  .diary p{margin:0;}
+  .billboard{background:linear-gradient(90deg,#ffe98a,#ffb703); border-radius:12px; padding:10px 12px; font-weight:800;
+    text-align:center; margin-bottom:8px; color:#6b4700;}
+  .songline{background:#241536; color:#ffd7ef; border-radius:12px; padding:8px 12px; font-size:13.5px; margin-bottom:6px;}
+  .bizrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;}
+  /* ---------- modals ---------- */
+  .overlay{position:fixed; inset:0; background:rgba(10,20,28,.55); display:none; align-items:center; justify-content:center; z-index:20; padding:14px;}
+  .overlay.show{display:flex;}
+  .modal{background:#fff; border-radius:20px; max-width:430px; width:100%; padding:20px; max-height:88vh; overflow:auto;}
+  .modal h3{margin:0 0 6px; font-size:19px;}
+  .modal p.note{font-size:13px; opacity:.75; margin:4px 0 10px; line-height:1.6;}
+  .modal label{display:block; font-size:13.5px; font-weight:700; margin:10px 0 4px;}
+  .modal input,.modal select{width:100%; padding:9px 10px; border:2px solid #dfe9ec; border-radius:10px; font-size:14.5px;}
+  .pack{display:flex; justify-content:space-between; align-items:center; border:2px solid #ffe1a8; background:#fffaf0;
+    border-radius:14px; padding:10px 12px; margin-bottom:8px; cursor:pointer; font-weight:700;}
+  .pack.sel{border-color:var(--gold); background:#fff3d6;}
+  .gate{display:flex; gap:8px; margin-top:8px;}
+  .gate button{flex:1; border:none; border-radius:12px; padding:11px; font-weight:800; cursor:pointer; font-size:15px;}
+  .gate .stripe{background:#635bff; color:#fff;}
+  .gate .paystack{background:#00c3f7; color:#003a47;}
+  .x{float:right; border:none; background:#eef3f5; border-radius:50%; width:30px; height:30px; cursor:pointer; font-size:15px;}
+  footer{max-width:1020px; margin:16px auto 0; color:#cfe3ec; font-size:12.5px; text-align:center; opacity:.85; line-height:1.7;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌆 拉各斯人生 · Lagos Life</h1>
+  <p>找工作、交朋友、泡夜店、住酒店、唱 KTV——在这座城市，过你想要的生活</p>
+</header>
+
+<div class="topbar">
+  <span class="chip">👤 <input id="nameInput" maxlength="12" value="小拉"></span>
+  <span class="chip">📅 第 <span id="vDay">1</span> 天 · <span id="vHour">08:00</span></span>
+  <span class="chip">💵 ₦<span id="vCash">0</span></span>
+  <span class="chip">🪙 <span id="vCoins">0</span> 金币</span>
+  <button class="btn" onclick="openModal('topup')">🪙 充值金币</button>
+</div>
+
+<div class="wrap">
+  <div class="card">
+    <div class="scene" id="scene">
+      <span class="emoji" id="sceneEmoji">🏠</span>
+      <h2 id="sceneName">Yaba 的小公寓</h2>
+      <p id="sceneDesc">你在拉各斯的故事，从这里开始。</p>
+      <div><span class="speech" id="speech">新的一天，先想想去哪儿吧。</span></div>
+    </div>
+    <div class="map" id="map"></div>
+    <div class="panel" id="panel"></div>
+    <div class="bizrow">
+      <button class="btn ghost" onclick="openModal('custom')">✏️ 打造我的城市</button>
+      <button class="btn ghost" onclick="openModal('merchant')">🏪 商家入驻 / 投广告</button>
+      <button class="btn ghost" onclick="openModal('singer')">🎤 歌手入驻</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stats">
+      <div class="stat"><span>⚡ 精力</span><div class="bar"><div class="f-energy" id="barEnergy"></div></div><b id="vEnergy"></b></div>
+      <div class="stat"><span>😊 心情</span><div class="bar"><div class="f-mood" id="barMood"></div></div><b id="vMood"></b></div>
+      <div class="stat"><span>🍔 饱腹</span><div class="bar"><div class="f-hunger" id="barHunger"></div></div><b id="vHunger"></b></div>
+      <div class="stat"><span>💬 社交</span><div class="bar"><div class="f-social" id="barSocial"></div></div><b id="vSocial"></b></div>
+    </div>
+    <div class="sec">
+      <h3>💼 工作</h3>
+      <div class="item"><span id="jobInfo">还没有工作，去职业中心看看吧。</span><b>经验 <span id="vXp">0</span></b></div>
+    </div>
+    <div class="sec">
+      <h3>🎒 背包</h3>
+      <div id="bag" class="list"><div class="item"><span>空空如也，去商场逛逛吧。</span></div></div>
+    </div>
+    <div class="sec">
+      <h3>💗 朋友</h3>
+      <div id="friends"></div>
+    </div>
+    <div class="sec">
+      <h3>📖 生活日记</h3>
+      <div class="diary" id="diary"></div>
+    </div>
+    <div class="sec" style="text-align:right">
+      <button class="btn ghost" id="btnReset" style="box-shadow:none; font-size:12.5px; padding:5px 10px;">重新开始</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  进度保存在这台设备的浏览器里 · 充值与入驻为演示模式，不会真实扣款（正式版接入 Stripe / Paystack 商户支付）<br>
+  Lagos Life 风格的生活模拟 · 街道与生活细节可以在「打造我的城市」里自己添加
+</footer>
+
+<!-- topup modal -->
+<div class="overlay" id="modal-topup">
+  <div class="modal">
+    <button class="x" onclick="closeModal('topup')">✕</button>
+    <h3>🪙 充值金币</h3>
+    <p class="note">金币可以住豪华酒店、开夜店 VIP 和 KTV 包间、给商家投广告、让歌手上夜店歌单。<br>
+    ⚠️ 当前为<b>演示模式</b>：点击支付不会真实扣款。正式上线时，这里会跳转 Stripe / Paystack 的收银台，支付成功后由服务器回调发放金币。</p>
+    <div id="packs"></div>
+    <div class="gate">
+      <button class="stripe" onclick="payDemo('Stripe')">用 Stripe 支付</button>
+      <button class="paystack" onclick="payDemo('Paystack')">用 Paystack 支付</button>
+    </div>
+    <p class="note" id="payMsg"></p>
+  </div>
+</div>
+
+<!-- merchant modal -->
+<div class="overlay" id="modal-merchant">
+  <div class="modal">
+    <button class="x" onclick="closeModal('merchant')">✕</button>
+    <h3>🏪 商家入驻 / 投广告</h3>
+    <p class="note">真实商家可以在游戏里开店、打广告：广告牌会出现在街道，推荐位出现在商场，赞助会出现在夜店。演示版用金币结算；正式版按次用 Stripe / Paystack 收取广告费。</p>
+    <label>商家名称</label><input id="mBiz" placeholder="例如：Mama Put 美食屋">
+    <label>类别</label>
+    <select id="mCat"><option>餐饮</option><option>服饰</option><option>美容</option><option>电子产品</option><option>其他</option></select>
+    <label>投放位置</label>
+    <select id="mPlace">
+      <option value="street">🪧 街道广告牌（20 金币 / 3 天）</option>
+      <option value="mall">🛍️ 商场推荐位（30 金币 / 3 天）</option>
+      <option value="club">🌃 夜店赞助（40 金币 / 3 天）</option>
+    </select>
+    <div class="gate"><button class="stripe" style="background:var(--gold); color:#6b4700;" onclick="submitMerchant()">确认入驻（付金币）</button></div>
+    <p class="note" id="mMsg"></p>
+  </div>
+</div>
+
+<!-- singer modal -->
+<div class="overlay" id="modal-singer">
+  <div class="modal">
+    <button class="x" onclick="closeModal('singer')">✕</button>
+    <h3>🎤 歌手入驻</h3>
+    <p class="note">歌手付费后，自己的歌会进入夜店播放列表，标注「正在热播」，持续 3 天（游戏内）。演示版 25 金币；正式版同样接 Stripe / Paystack。</p>
+    <label>歌手名</label><input id="sName" placeholder="例如：DJ Spinall 风格的艺名">
+    <label>歌名</label><input id="sTitle" placeholder="例如：Lagos Nights">
+    <label>链接（可选，如音乐平台主页）</label><input id="sLink" placeholder="https://…">
+    <div class="gate"><button class="stripe" style="background:var(--pink);" onclick="submitSinger()">上架到夜店（25 金币）</button></div>
+    <p class="note" id="sMsg"></p>
+  </div>
+</div>
+
+<!-- custom modal -->
+<div class="overlay" id="modal-custom">
+  <div class="modal">
+    <button class="x" onclick="closeModal('custom')">✕</button>
+    <h3>✏️ 打造我的城市</h3>
+    <p class="note">把你熟悉的街道、常去的小店、生活里的朋友放进游戏。添加后：小店会出现在「街道」，朋友会出现在「咖啡馆」。</p>
+    <label>类型</label>
+    <select id="cType"><option value="shop">🏪 小店 / 摊位</option><option value="npc">🧑 朋友 / 熟人</option></select>
+    <label>名称</label><input id="cName" placeholder="例如：楼下王姐的烧烤摊 / 发小阿明">
+    <label>所在街道或一句话介绍</label><input id="cDesc" placeholder="例如：Surulere 夜市口，烤串一绝">
+    <div class="gate"><button class="stripe" style="background:var(--teal); color:#04382b;" onclick="submitCustom()">添加到我的城市</button></div>
+    <p class="note" id="cMsg"></p>
+    <div id="customList"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+var KEY="lagos-life-save-v1";
+var LOCS=[
+  {id:"home",  icon:"🏠", name:"公寓",   street:"Yaba",        emoji:"🏠", title:"Yaba 的小公寓",     desc:"你租住的小窝。城市再大，也要有个落脚的地方。"},
+  {id:"jobs",  icon:"🧭", name:"职业中心", street:"Ikeja",      emoji:"🧭", title:"Ikeja 职业中心",   desc:"招聘墙上贴满了机会，先从一份工作开始。"},
+  {id:"office",icon:"🏢", name:"公司",   street:"Victoria Island", emoji:"🏢", title:"VI 的写字楼",   desc:"玻璃幕墙、海景和会议室——上班族的战场。"},
+  {id:"club",  icon:"🌃", name:"夜店",   street:"Lekki",       emoji:"🪩", title:"Lekki 夜店",       desc:"霓虹、节拍和人群。拉各斯的夜晚才刚刚开始。"},
+  {id:"hotel", icon:"🏨", name:"酒店",   street:"Ikoyi",       emoji:"🏨", title:"Ikoyi 大酒店",     desc:"累了就住一晚好的，早餐和海景都能治愈人。"},
+  {id:"food",  icon:"🍽️", name:"餐厅",   street:"Surulere",    emoji:"🍽️", title:"Surulere 餐厅街", desc:"Jollof Rice 的香气飘满整条街。"},
+  {id:"ktv",   icon:"🎤", name:"KTV",   street:"Victoria Island", emoji:"🎤", title:"VI KTV 会所",   desc:"拿起麦克风，今晚你就是主角。"},
+  {id:"mall",  icon:"🛍️", name:"商场",   street:"Ikeja",       emoji:"🛍️", title:"Ikeja 商场",      desc:"衣服、手机、香水和送给朋友的礼物。"},
+  {id:"street",icon:"🚶", name:"街道",   street:"全市",        emoji:"🌇", title:"拉各斯的街道",     desc:"广告牌、夜市和偶遇，生活气息最浓的地方。"},
+  {id:"cafe",  icon:"☕", name:"咖啡馆", street:"Yaba",        emoji:"☕", title:"Yaba 咖啡馆",      desc:"朋友们常在这里碰头，聊天、八卦、谈梦想。"}
+];
+var JOBS=[
+  {title:"外卖骑手", pay:8000,  xp:0,  desc:"跑遍大街小巷，先赚到第一桶金。"},
+  {title:"商场店员", pay:13000, xp:15, desc:"站柜台、学待客，稳定起步。"},
+  {title:"软件工程师", pay:32000, xp:35, desc:"写代码、做产品，收入明显上台阶。"},
+  {title:"项目经理", pay:58000, xp:70, desc:"带团队、扛结果，高薪也高压。"}
+];
+var NPCS=[
+  {id:"ada", name:"Adaeze", job:"服装设计师", emoji:"👗", line:"新一季的设计刚出来，你眼光好，帮我挑挑？"},
+  {id:"tun", name:"Tunde",  job:"夜店 DJ",   emoji:"🎧", line:"今晚夜店有新歌单，记得来蹦迪！"},
+  {id:"fun", name:"Funke",  job:"餐厅主厨",   emoji:"👩🏾‍🍳", line:"我的 Jollof 可是全 Surulere 第一。"},
+  {id:"eme", name:"Emeka",  job:"创业者",     emoji:"💡", line:"我有个小生意点子，就差一个合伙人了。"},
+  {id:"bol", name:"Bola",   job:"歌手",       emoji:"🎙️", line:"新歌刚录完，哪天去 KTV 唱给你听。"}
+];
+var FOODS=[
+  {name:"Jollof Rice 派对饭", price:2500, hunger:32, mood:6,  desc:"番茄辣饭，拉各斯的灵魂食物。"},
+  {name:"Suya 烤肉串",        price:1800, hunger:18, mood:9,  desc:"花生辣椒粉一撒，香到走不动。"},
+  {name:"海鲜大餐",           price:9000, hunger:48, mood:15, desc:"大虾、螃蟹配香槟，庆祝一下。"},
+  {name:"街边小吃拼盘",       price:900,  hunger:12, mood:4,  desc:"Akara 炸豆饼配可乐，实惠管饱。"}
+];
+var GOODS=[
+  {name:"时尚外套", price:15000, tag:"社交活动效果更好", once:true},
+  {name:"智能手机", price:45000, tag:"聊天交友更顺畅", once:true},
+  {name:"香水",     price:8000,  tag:"出门自带气场", once:true},
+  {name:"小礼物",   price:5000,  tag:"在咖啡馆送给朋友，好感大涨", once:false}
+];
+var PACKS=[
+  {coins:100,  price:"₦1,000"},
+  {coins:550,  price:"₦5,000"},
+  {coins:1200, price:"₦10,000"},
+  {coins:3000, price:"₦24,000"}
+];
+function fresh(){
+  return {name:"小拉", day:1, hour:8, cash:20000, coins:30, energy:85, mood:70, hunger:70, social:40,
+    job:null, xp:0, loc:"home", items:[], gifts:0, friends:{ada:10,tun:5,fun:0,eme:0,bol:15},
+    customShops:[], customNpcs:[], ads:[], songs:[], spent:false};
+}
+var S;
+try{ S=JSON.parse(localStorage.getItem(KEY))||fresh(); }catch(e){ S=fresh(); }
+if(!S || typeof S.cash!=="number") S=fresh();
+var selPack=1;
+
+function $(id){ return document.getElementById(id); }
+function clamp(v){ return Math.max(0, Math.min(100, Math.round(v))); }
+function fmtN(n){ return n.toLocaleString("en-US"); }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function say(t){ $("speech").textContent=t; }
+function log(t){
+  var p=document.createElement("p");
+  p.textContent="第"+S.day+"天 · "+t;
+  var d=$("diary"); d.prepend(p);
+  while(d.children.length>40) d.removeChild(d.lastChild);
+}
+function loc(){ for(var i=0;i<LOCS.length;i++) if(LOCS[i].id===S.loc) return LOCS[i]; return LOCS[0]; }
+function isNight(){ return S.hour>=18 || S.hour<5; }
+function advance(h){
+  for(var i=0;i<h;i++){
+    S.hour+=1; S.hunger=clamp(S.hunger-2);
+    if(S.hour>=24){ S.hour-=24; newDay(); }
+  }
+  if(S.energy<=5){ say("累到睁不开眼了，先休息吧。"); }
+  else if(S.hunger<=10){ say("肚子咕咕叫，该吃点东西了。"); }
+}
+function newDay(){
+  S.day+=1;
+  var keptAds=[], keptSongs=[];
+  S.ads.forEach(function(a){ a.days-=1; if(a.days>0) keptAds.push(a); else log("商家「"+a.biz+"」的广告到期下架了。"); });
+  S.songs.forEach(function(g){ g.days-=1; if(g.days>0) keptSongs.push(g); else log("歌曲《"+g.title+"》的热播期结束了。"); });
+  S.ads=keptAds; S.songs=keptSongs;
+  log("新的一天开始了。");
+}
+function spendCash(n){ if(S.cash<n){ say("现金不够啦，先去工作赚钱吧。"); return false; } S.cash-=n; return true; }
+function spendCoins(n){ if(S.coins<n){ say("金币不够，点上方「充值金币」可以补充（演示模式）。"); return false; } S.coins-=n; return true; }
+function go(id){ S.loc=id; var L=loc(); say(L.desc); render(); window.scrollTo({top:0, behavior:"smooth"}); }
+
+function render(){
+  $("vDay").textContent=S.day;
+  $("vHour").textContent=(S.hour<10?"0":"")+S.hour+":00";
+  $("vCash").textContent=fmtN(S.cash);
+  $("vCoins").textContent=fmtN(S.coins);
+  $("barEnergy").style.width=S.energy+"%"; $("vEnergy").textContent=S.energy;
+  $("barMood").style.width=S.mood+"%"; $("vMood").textContent=S.mood;
+  $("barHunger").style.width=S.hunger+"%"; $("vHunger").textContent=S.hunger;
+  $("barSocial").style.width=S.social+"%"; $("vSocial").textContent=S.social;
+  $("vXp").textContent=S.xp;
+  $("jobInfo").textContent = S.job ? ("当前工作："+S.job+"（日薪 ₦"+fmtN(jobPay(S.job))+"）") : "还没有工作，去职业中心看看吧。";
+  if(document.activeElement!==$("nameInput")) $("nameInput").value=S.name;
+  var L=loc();
+  $("sceneEmoji").textContent=L.emoji; $("sceneName").textContent=L.title; $("sceneDesc").textContent=L.desc;
+  $("scene").classList.toggle("night", isNight());
+  // map
+  var map=$("map"); map.innerHTML="";
+  LOCS.forEach(function(x){
+    var b=document.createElement("button");
+    b.className="loc"+(x.id===S.loc?" active":"");
+    b.innerHTML=x.icon+" "+x.name+"<small>"+x.street+"</small>";
+    b.onclick=function(){ go(x.id); };
+    map.appendChild(b);
+  });
+  // bag
+  var bag=$("bag"); bag.innerHTML="";
+  if(S.items.length===0 && S.gifts===0){ bag.innerHTML='<div class="item"><span>空空如也，去商场逛逛吧。</span></div>'; }
+  S.items.forEach(function(it){
+    var d=document.createElement("div"); d.className="item"; d.innerHTML="<span>🎁 "+it+"</span>"; bag.appendChild(d);
+  });
+  if(S.gifts>0){ var g=document.createElement("div"); g.className="item"; g.innerHTML="<span>💝 小礼物 × "+S.gifts+"</span><small>去咖啡馆送朋友</small>"; bag.appendChild(g); }
+  // friends
+  var fr=$("friends"); fr.innerHTML="";
+  allNpcs().forEach(function(n){
+    var pts=S.friends[n.id]||0;
+    var d=document.createElement("div"); d.className="friend";
+    d.innerHTML="<span>"+n.emoji+" <b>"+n.name+"</b> · "+n.job+"</span><span class='heartbar'><div style='width:"+Math.min(100,pts)+"%'></div></span> "+pts;
+    fr.appendChild(d);
+  });
+  renderPanel();
+  save();
+}
+function jobPay(title){ for(var i=0;i<JOBS.length;i++) if(JOBS[i].title===title) return JOBS[i].pay; return 0; }
+function allNpcs(){
+  var list=NPCS.slice();
+  S.customNpcs.forEach(function(c,i){ list.push({id:"cus"+i, name:c.name, job:c.desc||"我的朋友", emoji:"🧑", line:"（你自己添加的朋友）"+c.desc}); });
+  return list;
+}
+function npcById(id){ var a=allNpcs(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return a[0]; }
+</script>
+
+<script>
+"use strict";
+function actBtn(label, sub, fn, disabled){
+  return '<button class="act" onclick="'+fn+'" '+(disabled?"disabled":"")+'>'+label+'<small>'+sub+'</small></button>';
+}
+function renderPanel(){
+  var p=$("panel"), h="";
+  if(S.loc==="home"){
+    h="<h3>🏠 在家能做什么</h3><div class='row'>"
+      + actBtn("😴 睡到明早","精力回满 · 推进到第 2 天 08:00","doSleep()")
+      + actBtn("🛋️ 沙发躺平 2 小时","精力 +18 · 心情 +6","doRest()")
+      + actBtn("🍜 泡面填肚子","饱腹 +14 · 免费","doNoodle()")
+      + "</div>";
+  }
+  if(S.loc==="jobs"){
+    h="<h3>🧭 招聘墙</h3><div class='list'>";
+    JOBS.forEach(function(j,i){
+      var cur=S.job===j.title, ok=S.xp>=j.xp && !cur;
+      h+="<div class='item'><span><b>"+j.title+"</b> · 日薪 ₦"+fmtN(j.pay)+"<small>"+j.desc+"（需要经验 "+j.xp+"）</small></span>"
+        + (cur ? "<b>在职中</b>" : "<button class='mini' onclick='applyJob("+i+")' "+(ok?"":"disabled")+">应聘</button>") + "</div>";
+    });
+    h+="</div><p style='font-size:13px;opacity:.7'>经验靠上班积累：每上一次班 +10 经验。</p>";
+  }
+  if(S.loc==="office"){
+    h="<h3>🏢 上班</h3><div class='row'>";
+    if(S.job){
+      h+= actBtn("💼 上一班（4 小时）","日薪 ₦"+fmtN(jobPay(S.job))+" · 经验 +10 · 精力 -22","doWork()")
+        + actBtn("☕ 茶水间社交","社交 +8 · 精力 -4 · 1 小时","doOfficeChat()");
+    } else {
+      h+= actBtn("🧭 还没工作，先去职业中心","点地图上的「职业中心」应聘","go('jobs')");
+    }
+    h+="</div>";
+  }
+  if(S.loc==="club"){
+    h="<h3>🪩 夜店节目单</h3>";
+    var sponsors=S.ads.filter(function(a){return a.place==="club";});
+    sponsors.forEach(function(a){ h+="<div class='billboard'>🌃 本场赞助："+a.biz+"（"+a.cat+"）</div>"; });
+    h+="<div id='playlist'></div><div class='row'>"
+      + actBtn("💃 舞池热舞","门票 ₦2,000 · 心情 +18 · 社交 +12 · 精力 -15","doDance()")
+      + actBtn("🍸 吧台聊天","社交 +10 · 心情 +6 · ₦1,200","doClubChat()")
+      + actBtn("👑 VIP 包间","30 金币 · 心情 +26 · 社交 +16","doVip()")
+      + "</div>";
+  }
+  if(S.loc==="hotel"){
+    h="<h3>🏨 前台</h3><div class='list'>"
+      + "<div class='item'><span><b>标准间一晚</b><small>₦8,000 · 睡到明早 · 精力回满 · 心情 +8</small></span><button class='mini' onclick='doHotel(0)'>入住</button></div>"
+      + "<div class='item'><span><b>海景豪华套房</b><small>40 金币 · 睡到明早 · 精力回满 · 心情 +22 · 含早餐</small></span><button class='mini pink' onclick='doHotel(1)'>入住</button></div>"
+      + "<div class='item'><span><b>大堂下午茶</b><small>₦3,000 · 心情 +10 · 社交 +5</small></span><button class='mini' onclick='doTea()'>来一份</button></div>"
+      + "</div>";
+  }
+  if(S.loc==="food"){
+    h="<h3>🍽️ 菜单</h3><div class='list'>";
+    FOODS.forEach(function(f,i){
+      h+="<div class='item'><span><b>"+f.name+"</b> · ₦"+fmtN(f.price)+"<small>"+f.desc+" 饱腹 +"+f.hunger+" · 心情 +"+f.mood+"</small></span><button class='mini' onclick='doEat("+i+")'>点餐</button></div>";
+    });
+    h+="</div>";
+  }
+  if(S.loc==="ktv"){
+    h="<h3>🎤 点歌台</h3><div class='row'>"
+      + actBtn("🎵 大厅欢唱 2 小时","₦1,500 · 心情 +12 · 社交 +6","doKtv(0)")
+      + actBtn("🎙️ 豪华包间 3 小时","20 金币 · 心情 +24 · 社交 +14 · 也许有打赏","doKtv(1)")
+      + "</div>";
+  }
+  if(S.loc==="mall"){
+    var recs=S.ads.filter(function(a){return a.place==="mall";});
+    if(recs.length){ h="<h3>🛍️ 商场推荐（商家入驻）</h3><div class='list'>";
+      recs.forEach(function(a){ h+="<div class='item'><span>🏪 <b>"+a.biz+"</b><small>"+a.cat+" · 入驻商家推荐位</small></span><button class='mini' onclick='visitBiz()'>逛逛</button></div>"; });
+      h+="</div><h3 style='margin-top:12px'>🧺 商品货架</h3>";
+    } else h="<h3>🧺 商品货架</h3>";
+    h+="<div class='list'>";
+    GOODS.forEach(function(g,i){
+      var owned=S.items.indexOf(g.name)>=0;
+      h+="<div class='item'><span><b>"+g.name+"</b> · ₦"+fmtN(g.price)+"<small>"+g.tag+"</small></span>"
+        + (owned ? "<b>已拥有</b>" : "<button class='mini' onclick='doBuy("+i+")'>购买</button>") + "</div>";
+    });
+    h+="</div>";
+  }
+  if(S.loc==="street"){
+    var boards=S.ads.filter(function(a){return a.place==="street";});
+    h="<h3>🌇 街道日常</h3>";
+    boards.forEach(function(a){ h+="<div class='billboard'>🪧 "+a.biz+" · "+a.cat+"（广告牌）</div>"; });
+    h+="<div class='row'>"
+      + actBtn("🚶 散步 1 小时","随机小确幸 · 心情 +5","doWalk()")
+      + actBtn("🧺 逛夜市","₦1,000 淘小玩意 · 心情 +9","doMarket()")
+      + "</div>";
+    if(S.customShops.length){
+      h+="<h3 style='margin-top:12px'>🏪 我熟悉的小店（自己添加）</h3><div class='list'>";
+      S.customShops.forEach(function(c,i){
+        h+="<div class='item'><span><b>"+c.name+"</b><small>"+c.desc+"</small></span><button class='mini' onclick='visitCustom("+i+")'>打卡</button></div>";
+      });
+      h+="</div>";
+    }
+  }
+  if(S.loc==="cafe"){
+    h="<h3>☕ 朋友们都在</h3><div class='list'>";
+    allNpcs().forEach(function(n){
+      h+="<div class='item'><span>"+n.emoji+" <b>"+n.name+"</b> · "+n.job+"<small>“"+n.line+"”</small></span>"
+        + "<span><button class='mini' onclick=\"doChat('"+n.id+"')\">聊天</button> "
+        + "<button class='mini pink' onclick=\"doGift('"+n.id+"')\" "+(S.gifts>0?"":"disabled")+">送礼物</button></span></div>";
+    });
+    h+="</div>";
+  }
+  p.innerHTML=h;
+  var pl=$("playlist");
+  if(pl){
+    var lines="<div class='songline'>🎧 常驻歌单：Afrobeats 热门精选 · Amapiano 之夜</div>";
+    S.songs.forEach(function(g){
+      lines+="<div class='songline'>⭐ 正在热播："+g.singer+"《"+g.title+"》"+(g.link?" · "+g.link:"")+"（剩 "+g.days+" 天）</div>";
+    });
+    pl.innerHTML=lines;
+  }
+}
+/* ---------- actions ---------- */
+function doSleep(){ S.energy=100; S.hunger=clamp(S.hunger-8); S.hour=8; newDay(); say("睡个好觉，新的一天开始了。"); log("在家睡了一觉。"); render(); }
+function doRest(){ S.energy=clamp(S.energy+18); S.mood=clamp(S.mood+6); advance(2); say("躺平两小时，舒服多了。"); render(); }
+function doNoodle(){ S.hunger=clamp(S.hunger+14); advance(1); say("泡面下肚，先垫一垫。"); render(); }
+function applyJob(i){ var j=JOBS[i]; S.job=j.title; say("应聘成功！你现在是「"+j.title+"」，去公司上班赚钱吧。"); log("入职成为"+j.title+"。"); render(); }
+function doWork(){
+  if(S.energy<22){ say("精力不够上班，先休息吧。"); return; }
+  var pay=jobPay(S.job); S.cash+=pay; S.xp+=10; S.energy=clamp(S.energy-22); S.hunger=clamp(S.hunger-6);
+  advance(4); say("下班！工资 ₦"+fmtN(pay)+" 到账，经验 +10。"); log("上班赚了 ₦"+fmtN(pay)+"。"); render();
+}
+function doOfficeChat(){ S.social=clamp(S.social+8); S.energy=clamp(S.energy-4); advance(1); say("和同事聊聊项目和八卦，关系近了点。"); render(); }
+function doDance(){
+  if(!spendCash(2000)) { render(); return; }
+  S.mood=clamp(S.mood+18); S.social=clamp(S.social+12); S.energy=clamp(S.energy-15); advance(2);
+  say("舞池里灯光一闪，烦恼全甩掉！"); log("在夜店跳舞放松。"); render();
+}
+function doClubChat(){
+  if(!spendCash(1200)) { render(); return; }
+  S.social=clamp(S.social+10); S.mood=clamp(S.mood+6); advance(1);
+  var n=NPCS[Math.floor(Math.random()*NPCS.length)];
+  S.friends[n.id]=clamp((S.friends[n.id]||0)+4);
+  say("在吧台认识了新朋友，还和 "+n.name+" 聊了几句（好感 +4）。"); render();
+}
+function doVip(){
+  if(!spendCoins(30)) { render(); return; }
+  S.mood=clamp(S.mood+26); S.social=clamp(S.social+16); advance(2);
+  say("VIP 包间、专属服务，今晚你就是全场焦点。"); log("在夜店开了 VIP 包间。"); render();
+}
+function doHotel(tier){
+  if(tier===0){ if(!spendCash(8000)){ render(); return; } S.mood=clamp(S.mood+8); say("标准间安稳睡一晚，明早精神满满。"); log("住了一晚酒店标准间。"); }
+  else { if(!spendCoins(40)){ render(); return; } S.mood=clamp(S.mood+22); S.hunger=clamp(S.hunger+15); say("海景套房加丰盛早餐，这才是生活。"); log("住了海景豪华套房。"); }
+  S.energy=100; S.hour=8; newDay(); render();
+}
+function doTea(){ if(!spendCash(3000)){ render(); return; } S.mood=clamp(S.mood+10); S.social=clamp(S.social+5); advance(1); say("下午茶配点心，慢下来的时光真好。"); render(); }
+function doEat(i){
+  var f=FOODS[i]; if(!spendCash(f.price)){ render(); return; }
+  S.hunger=clamp(S.hunger+f.hunger); S.mood=clamp(S.mood+f.mood); advance(1);
+  say("「"+f.name+"」上桌——"+f.desc); log("吃了"+f.name+"。"); render();
+}
+function doKtv(tier){
+  if(tier===0){ if(!spendCash(1500)){ render(); return; } S.mood=clamp(S.mood+12); S.social=clamp(S.social+6); advance(2); say("一首老歌唱完，全场鼓掌。"); }
+  else{
+    if(!spendCoins(20)){ render(); return; }
+    S.mood=clamp(S.mood+24); S.social=clamp(S.social+14); advance(3);
+    if(Math.random()<0.35){ S.coins+=15; say("包间唱得太好，隔壁桌送来打赏 15 金币！"); log("KTV 包间收到打赏 15 金币。"); }
+    else say("豪华包间音响一流，唱到不想走。");
+  }
+  log("去 KTV 唱歌了。"); render();
+}
+function doBuy(i){
+  var g=GOODS[i]; if(!spendCash(g.price)){ render(); return; }
+  if(g.once) S.items.push(g.name); else S.gifts+=1;
+  S.mood=clamp(S.mood+6); say("买下了「"+g.name+"」。"+g.tag+"。"); log("在商场买了"+g.name+"。"); advance(1); render();
+}
+function visitBiz(){ S.mood=clamp(S.mood+5); advance(1); say("逛了入驻商家的店，装修和陈列都挺用心。"); render(); }
+function doWalk(){
+  advance(1); S.mood=clamp(S.mood+5);
+  var r=Math.random();
+  if(r<0.25){ S.cash+=500; say("散步时帮一位老奶奶提东西，她塞给你 ₦500 小费。"); }
+  else if(r<0.5){ var n=NPCS[Math.floor(Math.random()*NPCS.length)]; S.friends[n.id]=clamp((S.friends[n.id]||0)+3); say("街上偶遇 "+n.name+"，聊了一会儿（好感 +3）。"); }
+  else say("沿着街道慢慢走，看看这座城市的烟火气。");
+  render();
+}
+function doMarket(){ if(!spendCash(1000)){ render(); return; } S.mood=clamp(S.mood+9); advance(1); say("夜市淘到小玩意，还吃了烤玉米。"); render(); }
+function visitCustom(i){ var c=S.customShops[i]; S.mood=clamp(S.mood+6); S.social=clamp(S.social+3); advance(1); say("去了「"+c.name+"」打卡——"+c.desc); log("打卡了自己添加的小店「"+c.name+"」。"); render(); }
+function doChat(id){
+  var n=npcById(id); var gain=S.items.indexOf("智能手机")>=0?7:5;
+  S.friends[id]=clamp((S.friends[id]||0)+gain); S.social=clamp(S.social+6); advance(1);
+  say(n.name+"：“"+n.line+"”（好感 +"+gain+"）"); render();
+}
+function doGift(id){
+  if(S.gifts<=0) return;
+  S.gifts-=1; var n=npcById(id); S.friends[id]=clamp((S.friends[id]||0)+18);
+  say(n.name+" 收下礼物特别开心（好感 +18）。"); log("送了礼物给 "+n.name+"。"); render();
+}
+/* ---------- modals ---------- */
+function openModal(k){ $("modal-"+k).classList.add("show"); if(k==="topup") renderPacks(); if(k==="custom") renderCustomList(); }
+function closeModal(k){ $("modal-"+k).classList.remove("show"); }
+function renderPacks(){
+  var w=$("packs"); w.innerHTML="";
+  PACKS.forEach(function(pk,i){
+    var d=document.createElement("div");
+    d.className="pack"+(i===selPack?" sel":"");
+    d.innerHTML="<span>🪙 "+fmtN(pk.coins)+" 金币</span><span>"+pk.price+"</span>";
+    d.onclick=function(){ selPack=i; renderPacks(); };
+    w.appendChild(d);
+  });
+}
+function payDemo(gw){
+  var pk=PACKS[selPack];
+  $("payMsg").textContent="正在通过 "+gw+" 处理（演示）……";
+  setTimeout(function(){
+    S.coins+=pk.coins;
+    $("payMsg").textContent="✅ 演示支付成功：+"+pk.coins+" 金币（实际未扣款）。正式版会在 "+gw+" 回调确认后发放。";
+    log("充值了 "+pk.coins+" 金币（演示）。"); say("金币到账 +"+pk.coins+"！"); render();
+  }, 900);
+}
+function submitMerchant(){
+  var biz=$("mBiz").value.trim(); if(!biz){ $("mMsg").textContent="请先填写商家名称。"; return; }
+  var place=$("mPlace").value;
+  var cost= place==="street"?20 : (place==="mall"?30:40);
+  if(!spendCoins(cost)){ $("mMsg").textContent="金币不够（需要 "+cost+" 金币），先充值吧（演示）。"; render(); return; }
+  S.ads.push({biz:biz, cat:$("mCat").value, place:place, days:3});
+  $("mMsg").textContent="✅ 入驻成功！「"+biz+"」的广告已上线 3 天（街道/商场/夜店对应位置可见）。";
+  log("商家「"+biz+"」入驻投放了广告。"); say("商家入驻成功，广告已经上线！"); render();
+}
+function submitSinger(){
+  var nm=$("sName").value.trim(), tt=$("sTitle").value.trim();
+  if(!nm || !tt){ $("sMsg").textContent="歌手名和歌名都要填哦。"; return; }
+  if(!spendCoins(25)){ $("sMsg").textContent="金币不够（需要 25 金币）。"; render(); return; }
+  S.songs.push({singer:nm, title:tt, link:$("sLink").value.trim(), days:3});
+  $("sMsg").textContent="✅ 上架成功！今晚去夜店就能听到《"+tt+"》热播。";
+  log("歌手 "+nm+" 的《"+tt+"》进入夜店歌单。"); say("歌曲已进入夜店播放列表！"); render();
+}
+function submitCustom(){
+  var nm=$("cName").value.trim(); if(!nm){ $("cMsg").textContent="请填写名称。"; return; }
+  var t=$("cType").value, d=$("cDesc").value.trim();
+  if(t==="shop"){ S.customShops.push({name:nm, desc:d||"我熟悉的小店"}); }
+  else { S.customNpcs.push({name:nm, desc:d||"我的朋友"}); }
+  $("cMsg").textContent="✅ 已添加！"+(t==="shop" ? "去「街道」就能看到它。" : "去「咖啡馆」就能见到 TA。");
+  $("cName").value=""; $("cDesc").value="";
+  log("把「"+nm+"」放进了自己的城市。"); renderCustomList(); render();
+}
+function renderCustomList(){
+  var w=$("customList"); if(!w) return;
+  var h="";
+  S.customShops.forEach(function(c){ h+="<div class='item'><span>🏪 "+c.name+"</span><small>"+c.desc+"</small></div>"; });
+  S.customNpcs.forEach(function(c){ h+="<div class='item'><span>🧑 "+c.name+"</span><small>"+c.desc+"</small></div>"; });
+  w.innerHTML=h ? "<h4 style='margin:12px 0 6px'>已添加</h4>"+h : "";
+}
+$("nameInput").addEventListener("change", function(){ var v=this.value.trim(); if(v){ S.name=v; say("从今天起，你叫 "+v+"。"); render(); } });
+$("btnReset").onclick=function(){
+  if(confirm("要重新开始一段人生吗？现在的进度会被清空。")){
+    S=fresh(); $("diary").innerHTML=""; say("新的一天，先想想去哪儿吧。"); log("来到拉各斯，开启新生活。"); render();
+  }
+};
+log("来到拉各斯，开启新生活。");
+render();
+</script>
+</body>
+</html>
